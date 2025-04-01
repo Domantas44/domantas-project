@@ -6,3 +6,16 @@ CREATE TABLE employees1 (
     hire_date DATE,
     salary NUMBER
 );
+
+
+
+SET SERVEROUTPUT ON;
+
+BEGIN
+for i in (select first_name, last_name, SALARY
+            from EMPLOYEES
+            where salary > 5000)
+loop 
+    DBMS_OUTPUT.PUT_LINE('Salaries above 5000:' || i.first_name || i.last_name || i.salary);
+end loop;
+end;
