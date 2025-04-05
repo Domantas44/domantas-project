@@ -103,17 +103,81 @@ END;
 DROP TABLE books;
 
 ---- Beginner friendly coding from Gemini given exercises (variables, conditionals, loops, database interaction)
--- Conditional Logic and User Input 
+
+-- Conditional Logic and User Input (Discount calculator)
+
 DECLARE
-    v_customer_type VARCHAR2(10);
-    v_order_total NUMBER := '&Order amount';
-    v_discount NUMBER;
+    v_customer_type VARCHAR2(10) := 'REGULAR';
+    v_order NUMBER := 25;
+    v_order_total NUMBER;
+    
 BEGIN
-    if -- will continue on friday-saturday 
 
+     if v_customer_type = 'VIP' 
+        then v_order_total := v_order * 0.95;-- 5% discount
 
+    elsif v_customer_type = 'REGULAR' and v_order > 100
+        then v_order_total := v_order * 0.95; --5% discount
 
+    elsif v_customer_type = 'NEW' and v_order > 200 
+        then v_order_total := v_order * 0.90; --10% discount
 
+    else 
+        v_order_total := v_order * 0.98; -- 2% discount
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Customer type: ' || v_customer_type);
+    DBMS_OUTPUT.PUT_LINE('Order price' || v_order);
+    DBMS_OUTPUT.PUT_LINE('Final price' || v_order_total);
+END;
+-- Status checker
+DECLARE
+    product_id NUMBER := 150;
+    quantity_stock NUMBER := 20;
+    product_status VARCHAR(20);
+BEGIN
+    CASE 
+        WHEN quantity_stock > 10
+        THEN product_status := 'In stock';
+
+        WHEN quantity_stock BETWEEN 1 AND 10
+        THEN product_status := 'Low stock';
+
+        WHEN quantity_stock = 0
+        THEN product_status := 'Out of stock';
+
+        WHEN quantity_stock < 0
+        THEN product_status := 'Error';
+    END CASE;
+
+    DBMS_OUTPUT.PUT_LINE('Product id: ' || product_id);
+    DBMS_OUTPUT.PUT_LINE('Quantity in stock: ' || quantity_stock);
+    DBMS_OUTPUT.PUT_LINE('Product status: ' || product_status);
+END;
+
+--Looping with Database Interaction (employees table)
+CREATE OR REPLACE PROCEDURE salary_increase -- displaying all employees whose salary is < 3000 and showing 10% increase
+
+IS
+n_salary employees.salary%TYPE;
+
+BEGIN
+    FOR i in (select first_name, last_name, SALARY
+            from EMPLOYEES
+            where salary < 3000)
+    LOOP
+        n_salary := i.salary + (i.salary * 0.1);
+
+    DBMS_OUTPUT.PUT_LINE('Employees and their old and new increased salaries: ' ||
+    ' ' || i.first_name ||', '|| i.last_name ||', '|| i.salary ||', '|| n_salary);
+END LOOP;
+END;
+
+BEGIN
+    SALARY_INCREASE;
+END;
+
+-- will continue on sunday
 
 
 
