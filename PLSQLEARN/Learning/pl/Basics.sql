@@ -101,6 +101,87 @@ BEGIN
 END;
 
 DROP TABLE books;
+-- using my older 'dataset' and memorizing constraints that i still dont know, by leaving comments
+CREATE TABLE customers (
+    customer_id NUMBER PRIMARY KEY,
+    first_name VARCHAR2(50) NOT NULL,
+    last_name VARCHAR2(50) NOT NULL,
+    email VARCHAR2(100) UNIQUE NOT NULL, -- emails must be unique and not null
+    phone_number VARCHAR2(20) UNIQUE,
+    date_of_birth DATE NOT NULL,
+    created_at DATE DEFAULT SYSDATE -- logs system date
+);
+
+
+CREATE TABLE accounts (
+    account_id NUMBER PRIMARY KEY,
+    customer_id NUMBER REFERENCES customers(customer_id), -- 'references' creates relationsip between tables
+    account_type VARCHAR2(10) CHECK (account_type IN ('SAVINGS', 'CHECKING', 'LOAN')), -- 'check' ensures that any values inserted must be 'SAVINGS', 'CHECKING', 'LOAN'
+    balance NUMBER(12,2) DEFAULT 0, -- 'default' if no values are inserted, 0 is default
+    currency VARCHAR2(3) DEFAULT 'EUR',
+    status VARCHAR2(10) DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'BLOCKED', 'CLOSED')), -- 'status' values must be one of the following 'ACTIVE', 'BLOCKED', 'CLOSED'
+    created_at DATE DEFAULT SYSDATE 
+);
+
+CREATE TABLE transactions (
+    transaction_id NUMBER PRIMARY KEY,
+    account_id NUMBER REFERENCES accounts(account_id),
+    transaction_type VARCHAR2(10) CHECK (transaction_type IN ('DEPOSIT', 'WITHDRAWAL', 'TRANSFER')),
+    amount NUMBER(12,2) NOT NULL,
+    transaction_date DATE DEFAULT SYSDATE,
+    status VARCHAR2(15) DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'COMPLETED', 'FAILED')),
+    description VARCHAR2(255)
+);
+
+
+CREATE TABLE card_transactions (
+    card_transaction_id NUMBER PRIMARY KEY,
+    account_id NUMBER REFERENCES accounts(account_id),
+    card_number VARCHAR2(16) NOT NULL,
+    transaction_amount NUMBER(12,2) NOT NULL,
+    merchant VARCHAR2(100),
+    transaction_date DATE DEFAULT SYSDATE,
+    status VARCHAR2(15) DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'COMPLETED', 'FAILED'))
+);
+
+
+CREATE TABLE loans (
+    loan_id NUMBER PRIMARY KEY,
+    customer_id NUMBER REFERENCES customers(customer_id),
+    loan_amount NUMBER(12,2) NOT NULL,
+    interest_rate NUMBER(5,2) NOT NULL,
+    loan_term NUMBER NOT NULL,
+    loan_status VARCHAR2(10) CHECK (loan_status IN ('ACTIVE', 'CLOSED', 'DEFAULTED')),
+    created_at DATE DEFAULT SYSDATE
+);
+
+
+CREATE TABLE etl_audit_log (
+    log_id NUMBER PRIMARY KEY,
+    table_name VARCHAR2(50) NOT NULL,
+    operation VARCHAR2(10) CHECK (operation IN ('INSERT', 'UPDATE', 'DELETE')),
+    changed_at DATE DEFAULT SYSDATE,
+    changed_by VARCHAR2(50) NOT NULL
+);
+
+-- INDEX'es are very valuable when working with large datasets which is a must to know.
+
+-- An index is a performance-tuning method of allowing faster retrieval of records
+-- Index creates an entry for each value that appears in the indexed columns.
+CREATE INDEX idx_accounts_customer_id ON accounts(customer_id); -- customer_id is most oftenly accessed
+CREATE INDEX idx_transactions_account_id ON transactions(account_id);
+CREATE INDEX idx_transactions_status ON transactions(status);
+CREATE INDEX idx_transactions_date ON transactions(transaction_date);
+CREATE INDEX idx_card_transactions_account_id ON card_transactions(account_id);
+CREATE INDEX idx_card_transactions_status ON card_transactions(status);
+CREATE INDEX idx_loans_customer_id ON loans(customer_id);
+CREATE INDEX idx_loans_status ON loans(loan_status);
+CREATE INDEX idx_audit_table_op ON etl_audit_log(table_name, operation);
+
+-- Indexes are created for specific columns which are accessed most frequently
+
+-- Theoretical knowledge for know, practice with index'es will come later on
+
 
 ---- Beginner friendly coding from Gemini given exercises (variables, conditionals, loops, database interaction)
 
@@ -177,7 +258,36 @@ BEGIN
     SALARY_INCREASE;
 END;
 
--- will continue on sunday
+-- discuss with mentor on monday
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
