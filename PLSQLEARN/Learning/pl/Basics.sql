@@ -100,7 +100,7 @@ BEGIN
     book_delete(2);
 END;
 
-DROP TABLE books;
+
 -- using my older 'dataset' and memorizing constraints that i still dont know, by leaving comments
 CREATE TABLE customers (
     customer_id NUMBER PRIMARY KEY,
@@ -251,16 +251,69 @@ BEGIN
 
     DBMS_OUTPUT.PUT_LINE('Employees and their old and new increased salaries: ' ||
     ' ' || i.first_name ||', '|| i.last_name ||', '|| i.salary ||', '|| n_salary);
-END LOOP;
+    END LOOP;
 END;
 
 BEGIN
     SALARY_INCREASE;
 END;
+-- Another loop
+/*Loop through accounts with account_type = 'SAVINGS'.
+If the balance is less than 100, add 50 to the balance.
+Print the account ID and the action taken.*/
 
--- discuss with mentor on monday
+CREATE OR REPLACE PROCEDURE add_balance
+IS
 
+v_balance accounts.balance%TYPE;
 
+BEGIN
+    FOR i IN (SELECT account_id, balance FROM ACCOUNTS)
+    LOOP
+        IF i.balance < 100 THEN 
+            v_balance := i.balance + 50;
+            UPDATE ACCOUNTS
+            SET balance = i.balance + 50
+            WHERE account_id = i.account_id;
+
+            DBMS_OUTPUT.PUT_LINE('Account ids updated and their new balance' ||
+            ' ' || i.account_id ||' '|| v_balance);
+        END IF;
+    END LOOP;
+END;
+
+BEGIN
+    add_balance;
+END;
+
+-- And another loop
+/*Check all transactions with status 'PENDING' and a transaction_date older than 7 days.
+Update their status to 'FAILED'.
+Print how many transactions were updated.*/
+
+CREATE OR REPLACE PROCEDURE p_transactions
+IS
+t_count NUMBER := 0;
+BEGIN
+    FOR i IN (SELECT transaction_id, status, transaction_date 
+                FROM transactions 
+                WHERE transaction_date < SYSDATE -7)
+    LOOP
+        UPDATE transactions
+        SET status = 'FAILED'
+        WHERE transaction_id = i.transaction_id;
+
+        t_count := t_count + SQL%ROWCOUNT; 
+
+        DBMS_OUTPUT.PUT_LINE('Transaction ids: ' || i.transaction_id);
+    END LOOP;
+
+        DBMS_OUTPUT.PUT_LINE('Total transactions updated: ' || t_count);
+END;
+
+BEGIN
+    p_transactions;
+END;
 
 
 
