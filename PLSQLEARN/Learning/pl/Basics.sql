@@ -184,6 +184,38 @@ CREATE INDEX idx_audit_table_op ON etl_audit_log(table_name, operation);
 
 
 ---- Beginner friendly coding from Gemini given exercises (variables, conditionals, loops, database interaction)
+-- Retrieving Data (employees, customers table)
+
+SET SERVEROUTPUT ON;
+-- simple select
+SELECT customer_id, first_name, last_name
+FROM CUSTOMERS
+WHERE DATE_OF_BIRTH > TO_DATE('31-DEC-1980');
+
+-- simple employee_info procedure to retrieve specific employees id and its info
+CREATE OR REPLACE PROCEDURE employee_info (
+    v_employee_id IN EMPLOYEES.EMPLOYEE_ID%TYPE,
+    v_first_name OUT EMPLOYEES.FIRST_NAME%TYPE,
+    v_last_name OUT EMPLOYEES.LAST_NAME%TYPE,
+    v_email OUT EMPLOYEES.EMAIL%TYPE
+)
+IS
+BEGIN
+SELECT first_name, last_name, email
+INTO v_first_name, v_last_name, v_email
+        FROM EMPLOYEES
+        WHERE EMPLOYEE_ID = v_employee_id;
+END;
+-- executing it
+DECLARE
+    v_first_name EMPLOYEES.FIRST_NAME%TYPE;
+    v_last_name EMPLOYEES.LAST_NAME%TYPE;
+    v_email EMPLOYEES.EMAIL%TYPE;
+BEGIN
+    employee_info(100, v_first_name, v_last_name, v_email);
+    dbms_output.put_line('Employees info: ' || v_first_name ||' '|| v_last_name ||' '|| v_email);
+END;
+
 
 -- Conditional Logic and User Input (Discount calculator)
 
@@ -236,6 +268,17 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Product status: ' || product_status);
 END;
 
+-- Simple loop
+
+BEGIN
+for i in (select first_name, last_name, SALARY
+            from EMPLOYEES
+            where salary > 5000)
+loop 
+    DBMS_OUTPUT.PUT_LINE('Salaries above 5000:' || i.first_name || i.last_name || i.salary);
+end loop;
+end;
+
 --Looping with Database Interaction (employees table)
 CREATE OR REPLACE PROCEDURE salary_increase -- displaying all employees whose salary is < 3000 and showing 10% increase
 
@@ -257,6 +300,7 @@ END;
 BEGIN
     SALARY_INCREASE;
 END;
+
 -- Another loop
 /*Loop through accounts with account_type = 'SAVINGS'.
 If the balance is less than 100, add 50 to the balance.
@@ -303,7 +347,7 @@ BEGIN
         SET status = 'FAILED'
         WHERE transaction_id = i.transaction_id;
 
-        t_count := t_count + SQL%ROWCOUNT; 
+            t_count := t_count + SQL%ROWCOUNT; 
 
         DBMS_OUTPUT.PUT_LINE('Transaction ids: ' || i.transaction_id);
     END LOOP;
@@ -315,86 +359,100 @@ BEGIN
     p_transactions;
 END;
 
+-- Write a PL/SQL block that checks for duplicate emails in the customers table
+BEGIN
+    for i in (
+        SELECT email, count(email) AS emailcount
+        FROM customers 
+        GROUP BY email
+        HAVING count(email) > 1)
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('Email: ' || i.email || 'Email count: ' || i.emailcount);
+    END LOOP;
+END;
 
+/*Declare variables for a new loan (amount, rate, term, etc).
+Insert it into the loans table.
+Then insert a log entry into etl_audit_log for this action.*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--------------- Just random coding ------------------------
--- Retrieving Data (employees, customers table)
--- simple select
-SELECT customer_id, first_name, last_name
-FROM CUSTOMERS
-WHERE DATE_OF_BIRTH > TO_DATE('31-DEC-1980');
-
-
--- simple employee_info procedure to retrieve specific employees id and its info
-CREATE OR REPLACE PROCEDURE employee_info (
-    v_employee_id IN EMPLOYEES.EMPLOYEE_ID%TYPE,
-    v_first_name OUT EMPLOYEES.FIRST_NAME%TYPE,
-    v_last_name OUT EMPLOYEES.LAST_NAME%TYPE,
-    v_email OUT EMPLOYEES.EMAIL%TYPE
+CREATE OR REPLACE PROCEDURE n_loan (  
+    v_customer_id IN loans.customer_id%TYPE,
+    v_loan_amount IN loans.loan_amount%TYPE,
+    v_interest_rate IN loans.interest_rate%TYPE,
+    v_loan_term IN loans.loan_term%TYPE,
+    v_loan_status IN loans.loan_status%TYPE,
+    v_changed_by IN etl_audit_log.changed_by%TYPE
 )
 IS
+    v_loan_id NUMBER;
+    v_log_id NUMBER;
 BEGIN
-SELECT first_name, last_name, email
-INTO v_first_name, v_last_name, v_email
-        FROM EMPLOYEES
-        WHERE EMPLOYEE_ID = v_employee_id;
+
+    
+    INSERT INTO loans (loan_id, customer_id, loan_amount, interest_rate, loan_term, loan_status, created_at)
+    VALUES (loanseq.NEXTVAL, v_customer_id, v_loan_amount, v_interest_rate, v_loan_term, v_loan_status, SYSDATE)
+    RETURNING loan_id INTO v_loan_id;
+
+    INSERT INTO etl_audit_log (log_id, table_name, operation, changed_at, changed_by)
+    VALUES (logseq.NEXTVAL, 'loans', 'INSERT', SYSDATE, v_changed_by)
+    RETURNING log_id INTO v_log_id;
+
+    DBMS_OUTPUT.PUT_LINE('Load id and customer id:  ' || v_loan_id ||' '|| v_customer_id );
+    DBMS_OUTPUT.PUT_LINE('log id: ' || v_log_id);
 END;
--- executing it
-DECLARE
-    v_first_name EMPLOYEES.FIRST_NAME%TYPE;
-    v_last_name EMPLOYEES.LAST_NAME%TYPE;
-    v_email EMPLOYEES.EMAIL%TYPE;
-BEGIN
-    employee_info(100, v_first_name, v_last_name, v_email);
-    dbms_output.put_line('Employees info: ' || v_first_name ||' '|| v_last_name ||' '|| v_email);
-END;
 
-SET SERVEROUTPUT ON;
-
--- remembering loops
+CREATE SEQUENCE loanseq START WITH 1 INCREMENT BY 1; 
+CREATE SEQUENCE logseq START WITH 1 INCREMENT BY 1;
 
 BEGIN
-for i in (select first_name, last_name, SALARY
-            from EMPLOYEES
-            where salary > 5000)
-loop 
-    DBMS_OUTPUT.PUT_LINE('Salaries above 5000:' || i.first_name || i.last_name || i.salary);
-end loop;
-end;
+    n_loan( -- does not execute properly, needs fixing
+        v_customer_id = 11,  
+        v_loan_amount = 10000,
+        v_interest_rate = 4.5,
+        v_loan_term = 24,
+        v_loan_status = 'ACTIVE',
+        v_changed_by = 'Domantas'
+    );
+END; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
