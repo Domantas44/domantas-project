@@ -268,7 +268,7 @@ IS
 v_balance accounts.balance%TYPE;
 
 BEGIN
-    FOR i IN (SELECT account_id, balance FROM ACCOUNTS)
+    FOR i IN (SELECT account_id, balance FROM ACCOUNTS WHERE account_type = 'SAVINGS')
     LOOP
         IF i.balance < 100 THEN 
             v_balance := i.balance + 50;
@@ -297,7 +297,7 @@ t_count NUMBER := 0;
 BEGIN
     FOR i IN (SELECT transaction_id, status, transaction_date 
                 FROM transactions 
-                WHERE transaction_date < SYSDATE -7)
+                WHERE transaction_date < SYSDATE -7 AND status = 'PENDING')
     LOOP
         UPDATE transactions
         SET status = 'FAILED'
