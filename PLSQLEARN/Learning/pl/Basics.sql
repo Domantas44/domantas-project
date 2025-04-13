@@ -401,40 +401,77 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('log id: ' || v_log_id);
 END;
 
-CREATE SEQUENCE loanseq START WITH 1 INCREMENT BY 1; 
-CREATE SEQUENCE logseq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE loanseq START WITH 11 INCREMENT BY 1; 
+CREATE SEQUENCE logseq START WITH 11 INCREMENT BY 1;
 
 BEGIN
-    n_loan( -- does not execute properly, needs fixing
-        v_customer_id = 11,  
-        v_loan_amount = 10000,
-        v_interest_rate = 4.5,
-        v_loan_term = 24,
-        v_loan_status = 'ACTIVE',
-        v_changed_by = 'Domantas'
+    n_loan( -- does not execute properly, needs fixing. FIXED, you can not create a sequence starting with a number thats already there in dataset.
+        v_customer_id => 1,  
+        v_loan_amount => 10000,
+        v_interest_rate => 4.5,
+        v_loan_term => 24,
+        v_loan_status => 'ACTIVE',
+        v_changed_by => 'Domantas'
     );
 END; 
 
+-- at the weekend, have upgraded some pc parts, had to reinstall windows, oracle database etc.. so it consumed a considerable amount of time :D
 
+/*Loop through all accounts and print a custom message using CASE:
 
+If status = 'ACTIVE' → print 'Running account'
 
+If status = 'BLOCKED' → print 'Attention needed'
 
+If status = 'CLOSED' → print 'Archived account'*/
 
+BEGIN
+for i in (SELECT account_id, status 
+            FROM ACCOUNTS)
+    LOOP 
+        CASE 
+            WHEN i.status = 'ACTIVE'
+            THEN DBMS_OUTPUT.PUT_LINE('Running account ' || i.account_id);
 
+            WHEN i.status = 'BLOCKED'
+            THEN DBMS_OUTPUT.PUT_LINE('Attention needed ' || i.account_id);
 
+            WHEN i.status = 'CLOSED'
+            THEN DBMS_OUTPUT.PUT_LINE('Achived account ' || i.account_id);
 
+            ELSE   
+            DBMS_OUTPUT.PUT_LINE('Unknown status ' || i.account_id);
+        END CASE;
+    END LOOP;
+END;
 
+/* Write a block that:
 
+Deletes all transactions older than 2 years
 
+For each deleted row, insert a log in etl_audit_log
 
+table_name = 'transactions', operation = 'DELETE'*/
+CREATE OR REPLACE PROCEDURE old_transactions
+IS
+BEGIN
+    for i IN (SELECT transaction_id, transaction_date
+            FROM TRANSACTIONS
+            WHERE transaction_date < ADD_MONTHS(SYSDATE, -24))
+        LOOP
+        DELETE FROM TRANSACTIONS
+        WHERE transaction_id = i.transaction_id;
 
+        INSERT INTO etl_audit_log (log_id, table_name, operation, changed_at, changed_by)
+        VALUES (logseq1.NEXTVAL, 'transactions', 'DELETE', SYSDATE, 'Domantas');
+    END LOOP;
+END;
 
+BEGIN
+    OLD_TRANSACTIONS;
+END;
 
-
-
-
-
-
+CREATE SEQUENCE logseq1 START WITH 14 INCREMENT BY 1;
 
 
 
