@@ -8,19 +8,24 @@ that has accumulated while doing business.
 */
 
 
+-- Section 1
 
+/* 
+This part of the code creates 8 previously mentioned tables where
+data will be stored. Further explanation of what the code does is written bellow.
+*/
 
-CREATE SEQUENCE app_seq START WITH 1; -- creating appointment_id sequence that will start incrementing from 1;
-CREATE TABLE appointments 
+CREATE SEQUENCE app_seq START WITH 1; -- creating appointment_id sequence that will start incrementing from 1(When you import data, unique ID for that specific table will be generated, so the rows of data can always be identified by the unique ID);
+CREATE TABLE appointments -- Creating table named 'appointments'
 (
-  appointment_id        NUMBER    DEFAULT app_seq.nextval NOT NULL, -- appointments id default (number) values are sequence that i created above and it can not be null;
+  appointment_id        NUMBER    DEFAULT app_seq.nextval NOT NULL, -- appointment_id column data type will be 'Number' and its Default values comes from the previously mentioned sequence which generates unique id's.
   customer_id           NUMBER    NOT NULL, -- customer_id (number)
   groomer_id            NUMBER    NOT NULL, 
   pet_id                NUMBER    NOT NULL, 
   appointment_date      DATE      NOT NULL, -- this column stores the date of an appointment event;
-  appointment_cancelled NUMBER(1) DEFAULT 0 CHECK (appointment_cancelled IN (0, 1)) NOT NULL, -- column where you can see if the appointment was cancelled or not, 0 - False, 1 - True. Default - 0 (Not cancelled)
+  appointment_cancelled NUMBER(1) DEFAULT 0 CHECK (appointment_cancelled IN (0, 1)) NOT NULL, -- 'CHECK (appointment_cancelled IN (0, 1))' checks if the number is 1 or 0,  if the appointment was cancelled:  1 - True, 0 - False, if no values are inserted it inserts Default - 0 (Not cancelled)
   payment_id            NUMBER, -- column that references other table (payments)
-  CONSTRAINT PK_appointments PRIMARY KEY (appointment_id) -- this constraint creates primary key for the table which is (appointment_id)
+  CONSTRAINT PK_appointments PRIMARY KEY (appointment_id) -- this constraint creates primary key for this table (appointment_id)
 );
 
 CREATE SEQUENCE cus_seq START WITH 1;
@@ -96,12 +101,18 @@ CREATE TABLE services
   CONSTRAINT PK_services PRIMARY KEY (service_id)
 );
 
-/* After table creation, relationships have to link together these tables, so that the data logic and querying (data retrieval) does not break.
-    ERD editor automatically written this code, but i will still leave comments on whats what.
+
+-- Section 2
+/* 
+After table creation, relationships have to link together these tables, 
+so that the data logic and querying (data retrieval) does not break.
+Further explanation of what the code does is written bellow.
 */
+
+-- ERD editor automatically written this code, but i will still leave comments on whats what.
 --
-ALTER TABLE appointments                        --this code block says (the others below are the same logic), that in appointments table customer_id column is a foreign key from other table and that it must reference(match) customer_id in the customers table.
-  ADD CONSTRAINT FK_customers_TO_appointments -- so this is one to many relationship right there, for now i believe all of this model has to be one to many
+ALTER TABLE appointments                        --this code block says (the others below are the same logic), that in appointments table customer_id column is a foreign key from another table and that it must reference(match) customer_id in the customers table.
+  ADD CONSTRAINT FK_customers_TO_appointments -- this whole data model consists of one to many relationships
     FOREIGN KEY (customer_id)
     REFERENCES customers (customer_id);
 --
@@ -135,28 +146,24 @@ ALTER TABLE services
     FOREIGN KEY (appointment_id)
     REFERENCES appointments (appointment_id);
 
-/*Data amount on this sort of business should be pretty minor, 
-but i still want to practice and write indexes for this particular 
-data model.
 
+-- Section 3 (last part)
+/*
 Index is a performance-tuning method for allowing faster retrieval of records
 it creates an entry for each value that appears in the indexed columns.
 Indexes are created for columns which are accessed most frequently
 */
 
--- These are the indexes that i believe are the most beneficial for this data model:
 CREATE INDEX idx_appointments_customer_id ON appointments(customer_id); 
 CREATE INDEX idx_appointments_groomer_id ON appointments(groomer_id); 
 CREATE INDEX idx_appointments_appointment_date ON appointments(appointment_date); 
 CREATE INDEX idx_payments_payment_id ON payments(payment_id); 
-CREATE INDEX idx_customers_phone ON customers(phone); 
+CREATE INDEX idx_payments_payment_date ON payments(payment_date); 
 CREATE INDEX idx_groomers_status ON groomers(status); 
+CREATE INDEX idx_service_items_items_id ON service_items(items_id); 
 
 
----- must finish on friday
--- indexes
--- further explanation and simplification of description
--- few questions for mentor
+
 
 
 
