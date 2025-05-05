@@ -197,5 +197,7 @@ CREATE INDEX idx_service_items_items_id ON service_items(items_id);
 12. For sequences, I suggest using more understandable names, rather than short ones.
 
 13. For table Identification suggest to use "table name" + _id, this way easer to see for which table it is, because in some tables of yours is different from table name.
+
+14. For the diagram, not all relationships are added.
 */
 
