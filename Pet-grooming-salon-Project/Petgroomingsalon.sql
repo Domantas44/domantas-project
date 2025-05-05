@@ -164,6 +164,38 @@ CREATE INDEX idx_service_items_items_id ON service_items(items_id);
 
 
 
+-- Some suggestions and questions after looking into script
+/*
+1. Please add comments explaining why you chose these tables, similar to documentation. When starting to create a new database, it's usually better to write comments for tables and attributes. This helps anyone looking at your script to understand more clearly what you intend to create.
 
+3. When naming, use either upper case or lower case consistently. For example, FK_appointments_TO_services is not the correct way to write it. The script will be more readable if you use one style. Usually, Oracle functions are written in upper case, while attributes are written in lower case.
 
+2. Can you explain why you need this check?
+      appointment_cancelled NUMBER(1) DEFAULT 0 CHECK (appointment_cancelled IN (0, 1)) NOT NULL, -- 'CHECK (appointment_cancelled IN (0, 1))' checks if the number is 1 or 0,  if the appointment was cancelled:  1 - True, 0 - False, if no values are inserted it inserts Default - 0 (Not cancelled)
+
+3. I see you use the type VARCHAR2(200). There are two ways to write VARCHAR2. 
+   Can you check and explain the differences between them and which one is better to use?
+
+4. For better understanding of tables, I suggest adding comments to the attributes.
+   Can you edit your script?
+
+5. I see that you use NOT NULL everywhere. Is it really necessary? For some attributes, you might not need to use it.
+   Can you review and make changes where you think it is not necessary? If it is necessary can you explain why you think that?
+
+6. It will be greate that you creation order end with appointments table, because when you create table or objects ussually start from object which unique and do not have foreign key, it is like primary table and this way is more readable.
+
+7. Also, you need to add audit columns. This makes it easier to check changes. But not for all tables. In this part you also can create triggers.
+
+8. For this table suggest to add email column to customers table.
+
+9. For DB you can also add one more object for automatic message info, in which person is getting information of his appointment.
+
+10. For pets table I suggest to add one more collumn "description". Because if there specific info about pet that are groomer have to know costumer can add it.
+
+11. Create another table for groomers working calendors.
+
+12. For sequences, I suggest using more understandable names, rather than short ones.
+
+13. For table Identification suggest to use "table name" + _id, this way easer to see for which table it is, because in some tables of yours is different from table name.
+*/
 
