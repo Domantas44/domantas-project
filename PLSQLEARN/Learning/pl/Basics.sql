@@ -164,6 +164,15 @@ CREATE TABLE etl_audit_log (
     changed_by VARCHAR2(50) NOT NULL
 );
 
+DROP TABLE customers;
+DROP TABLE card_transactions;
+DROP TABLE loans;
+DROP TABLE transactions;
+DROP TABLE etl_audit_log;
+DROP TABLE accounts;
+
+
+
 -- INDEX'es are very valuable when working with large datasets which is a must to know.
 
 -- An index is a performance-tuning method of allowing faster retrieval of records
