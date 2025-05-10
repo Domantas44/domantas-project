@@ -1,43 +1,3 @@
-      ------------------------------------------------------------------------------
---------------------------  PET GROOMING SALON by Domantas  -----------------------------
-      ------------------------------------------------------------------------------
-/*
-This dataset schema consists of 8 tables linked together to create
-a data model where Pet grooming salon could store/retrieve/analyze data 
-that has accumulated while doing business.
-*/
-
-
--- Section 1
-
-/* 
-This part of the code creates 8 previously mentioned tables where
-data will be stored. Further explanation of what the code does is written bellow.
-*/
-
-
--- Table called 'appointments' which stores all the neccessary data related to appointments, the attributes are listed below with explanation.
-
-CREATE SEQUENCE appointments_seq START WITH 1; -- creating appointment_id sequence that will start incrementing from 1(When you import data, unique ID for that specific table will be generated, so the rows of data can always be identified by the unique ID);
-CREATE TABLE appointments 
-(
-  appointment_id        NUMBER    DEFAULT appointments_seq.nextval NOT NULL, -- appointment_id column data type will be 'Number' and its Default values comes from the previously mentioned sequence which generates unique id's.
-  customer_id           NUMBER    NOT NULL, -- customer_id (number)
-  groomer_id            NUMBER    NOT NULL, 
-  pet_id                NUMBER    NOT NULL, 
-  appointment_date      DATE      NOT NULL, -- this column stores the date of an appointment event;
-  appointment_cancelled NUMBER(1) DEFAULT 0 CHECK (appointment_cancelled IN (0, 1)), -- 'CHECK (appointment_cancelled IN (0, 1))' checks if the number is 1 or 0,  if the appointment was cancelled:  1 - True, 0 - False, if no values are inserted it inserts Default - 0 (Not cancelled)
-  payment_id            NUMBER, -- column that references other table (payments)
-  creation_date  DATE DEFAULT SYSDATE NOT NULL,
-  last_updated_by VARCHAR2(20 BYTE),
-  last_update    DATE DEFAULT SYSDATE,
-
-
-  CONSTRAINT pk_appointments PRIMARY KEY (appointment_id) -- this constraint creates primary key for this table (appointment_id)
-);
-
--- Table called 'customers' with columns used to store data about the customers
-
 CREATE SEQUENCE customers_seq START WITH 1;
 CREATE TABLE customers
 (
@@ -48,9 +8,6 @@ CREATE TABLE customers
   email       VARCHAR(200 BYTE),
   CONSTRAINT pk_customers PRIMARY KEY (customer_id)
 );
-
-
--- Table called 'groomers' which stores all the neccessary data about the employee
 
 CREATE SEQUENCE groomers_seq START WITH 1;
 CREATE TABLE groomers
@@ -70,37 +27,6 @@ CREATE TABLE groomers
   CONSTRAINT pk_groomers PRIMARY KEY (groomer_id)
 );
 
-
--- Table 'payments' which stores all the neccessary data related to payments
-
-CREATE SEQUENCE payments_seq START WITH 1;
-CREATE TABLE payments
-(
-  payment_id     NUMBER   DEFAULT payments_seq.nextval NOT NULL,
-  amount         NUMBER   NOT NULL,
-  payment_date   DATE     NOT NULL,
-  appointment_id NUMBER   NOT NULL,
-  payment_method VARCHAR2(10 BYTE) NOT NULL,
-  CONSTRAINT pk_payments PRIMARY KEY (payment_id)
-);
-
-
--- Table 'pets' which stores all the neccessary data related to pets
-
-CREATE SEQUENCE pets_seq START WITH 1;
-CREATE TABLE pets
-(
-  pet_id      NUMBER   DEFAULT pets_seq.nextval NOT NULL,
-  customer_id NUMBER   NOT NULL,
-  pet_name    VARCHAR2(20 CHAR) NOT NULL,
-  pet_breed   VARCHAR2(20 CHAR),
-  description VARCHAR2 (200 CHAR),
-  CONSTRAINT pk_pets PRIMARY KEY (pet_id)
-);
-
-
--- Table 'service_inventory' which stores all the neccessary data related to service_inventory
-
 CREATE SEQUENCE items_seq START WITH 1;
 CREATE TABLE service_inventory
 (
@@ -115,18 +41,44 @@ CREATE TABLE service_inventory
 );
 
 
--- Table 'service_items' which stores all the neccessary data related to service items
-
-CREATE TABLE service_items
+CREATE SEQUENCE pets_seq START WITH 1;
+CREATE TABLE pets
 (
-  item_id    NUMBER NOT NULL,
-  quantity   NUMBER NOT NULL,
-  service_id NUMBER NOT NULL,
-  CONSTRAINT pk_service_items PRIMARY KEY (item_id)
+  pet_id      NUMBER   DEFAULT pets_seq.nextval NOT NULL,
+  customer_id NUMBER   NOT NULL,
+  pet_name    VARCHAR2(20 CHAR) NOT NULL,
+  pet_type    VARCHAR2(20 CHAR) NOT NULL,
+  pet_breed   VARCHAR2(20 CHAR),
+  description VARCHAR2 (200 CHAR),
+  CONSTRAINT pk_pets PRIMARY KEY (pet_id)
 );
 
+CREATE SEQUENCE appointments_seq START WITH 1; -- creating appointment_id sequence that will start incrementing from 1(When you import data, unique ID for that specific table will be generated, so the rows of data can always be identified by the unique ID);
+CREATE TABLE appointments 
+(
+  appointment_id        NUMBER    DEFAULT appointments_seq.nextval NOT NULL, -- appointment_id column data type will be 'Number' and its Default values comes from the previously mentioned sequence which generates unique id's.
+  customer_id           NUMBER    NOT NULL, -- customer_id (number)
+  groomer_id            NUMBER    NOT NULL, 
+  pet_id                NUMBER    NOT NULL, 
+  appointment_date      DATE      NOT NULL, -- this column stores the date of an appointment event;
+  appointment_cancelled NUMBER(1) DEFAULT 0 NOT NULL CHECK (appointment_cancelled IN (0, 1)), -- 'CHECK (appointment_cancelled IN (0, 1))' checks if the number is 1 or 0,  if the appointment was cancelled:  1 - True, 0 - False, if no values are inserted it inserts Default - 0 (Not cancelled)
+  payment_id            NUMBER, -- column that references other table (payments)
+  creation_date  DATE DEFAULT SYSDATE NOT NULL,
+  last_updated_by VARCHAR2(20 BYTE),
+  last_update    DATE DEFAULT SYSDATE,
+  CONSTRAINT pk_appointments PRIMARY KEY (appointment_id) -- this constraint creates primary key for this table (appointment_id)
+);
 
--- Table 'services' which stores all the neccessary data related to services
+CREATE SEQUENCE payments_seq START WITH 1;
+CREATE TABLE payments
+(
+  payment_id     NUMBER   DEFAULT payments_seq.nextval NOT NULL,
+  amount         NUMBER   NOT NULL,
+  payment_date   DATE     NOT NULL,
+  appointment_id NUMBER   NOT NULL,
+  payment_method VARCHAR2(10 BYTE) NOT NULL,
+  CONSTRAINT pk_payments PRIMARY KEY (payment_id)
+);
 
 CREATE TABLE services
 (
@@ -140,6 +92,29 @@ CREATE TABLE services
   last_update    DATE DEFAULT SYSDATE,
   CONSTRAINT pk_services PRIMARY KEY (service_id)
 );
+
+CREATE TABLE service_items
+(
+  item_id    NUMBER NOT NULL,
+  quantity   NUMBER NOT NULL,
+  service_id NUMBER NOT NULL,
+  created_by     VARCHAR2(20 BYTE),
+  creation_date  DATE DEFAULT SYSDATE NOT NULL,
+  last_updated_by VARCHAR2(20 BYTE),
+  last_update    DATE DEFAULT SYSDATE,
+  CONSTRAINT pk_service_items PRIMARY KEY (item_id)
+);
+
+
+DROP TABLE customers;
+DROP TABLE groomers;
+DROP TABLE appointments;
+DROP TABLE payments;
+DROP TABLE services;
+DROP TABLE service_inventory;
+DROP TABLE service_items;
+DROP TABLE pets;
+
 
 
 -- Section 2
@@ -187,7 +162,7 @@ ALTER TABLE services
     REFERENCES appointments (appointment_id);
 
 
--- Section 3 (last part)
+-- Section 3 
 /*
 Index is a performance-tuning method for allowing faster retrieval of records
 it creates an entry for each value that appears in the indexed columns.
@@ -223,7 +198,7 @@ CREATE INDEX idx_service_items_items_id ON service_items(items_id);
 
 4. For better understanding of tables, I suggest adding comments to the attributes.
    Can you edit your script?
-    -- It appears like i do have written comments there, looks like it would become repetitively written, because there are not much different attributes in the data model.
+    -- on my way
 
 5. I see that you use NOT NULL everywhere. Is it really necessary? For some attributes, you might not need to use it.
    Can you review and make changes where you think it is not necessary? If it is necessary can you explain why you think that?
