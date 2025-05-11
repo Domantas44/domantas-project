@@ -5,7 +5,7 @@ CREATE TABLE customers
   first_name  VARCHAR2(20 CHAR) NOT NULL,
   last_name   VARCHAR2(20 CHAR),
   phone       NUMBER NOT NULL,
-  email       VARCHAR(200 BYTE),
+  email       VARCHAR(200 BYTE) NOT NULL,
   CONSTRAINT pk_customers PRIMARY KEY (customer_id)
 );
 
@@ -19,27 +19,24 @@ CREATE TABLE groomers
   salary     NUMBER   NOT NULL,
   email      VARCHAR2(20 BYTE) NOT NULL,
   phone      NUMBER   NOT NULL,
-  birth_date DATE     NOT NULL,
+  birth_date DATE,
   address    VARCHAR2(20 CHAR),
-  creation_date  DATE DEFAULT SYSDATE NOT NULL,
+  created_by VARCHAR2(20 BYTE),
+  creation_date  DATE DEFAULT SYSDATE,
   last_updated_by VARCHAR2(20 BYTE),
   last_update    DATE DEFAULT SYSDATE,
   CONSTRAINT pk_groomers PRIMARY KEY (groomer_id)
 );
 
-CREATE SEQUENCE items_seq START WITH 1;
-CREATE TABLE service_inventory
+CREATE SEQUENCE services_seq START WITH 1;
+CREATE TABLE services
 (
-  item_id    NUMBER DEFAULT items_seq.nextval NOT NULL,
-  item_name  VARCHAR2(50 CHAR) NOT NULL,
-  unit       NUMBER   NOT NULL,
-  unit_price NUMBER   NOT NULL,
-  creation_date  DATE DEFAULT SYSDATE NOT NULL,
-  last_updated_by VARCHAR2(20 BYTE),
-  last_update    DATE DEFAULT SYSDATE,
-  CONSTRAINT pk_service_inventory PRIMARY KEY (item_id)
+  service_id     NUMBER   DEFAULT services_seq.nextval NOT NULL, 
+  service_name   VARCHAR2(20 BYTE) NOT NULL,
+  price          NUMBER   NOT NULL,
+  description    VARCHAR2(200 BYTE) NOT NULL,
+  CONSTRAINT pk_services PRIMARY KEY (service_id)
 );
-
 
 CREATE SEQUENCE pets_seq START WITH 1;
 CREATE TABLE pets
@@ -49,126 +46,138 @@ CREATE TABLE pets
   pet_name    VARCHAR2(20 CHAR) NOT NULL,
   pet_type    VARCHAR2(20 CHAR) NOT NULL,
   pet_breed   VARCHAR2(20 CHAR),
-  description VARCHAR2 (200 CHAR),
+  description VARCHAR2 (255 CHAR),
   CONSTRAINT pk_pets PRIMARY KEY (pet_id)
 );
 
-CREATE SEQUENCE appointments_seq START WITH 1; -- creating appointment_id sequence that will start incrementing from 1(When you import data, unique ID for that specific table will be generated, so the rows of data can always be identified by the unique ID);
+CREATE SEQUENCE appointments_seq START WITH 1; 
 CREATE TABLE appointments 
 (
-  appointment_id        NUMBER    DEFAULT appointments_seq.nextval NOT NULL, -- appointment_id column data type will be 'Number' and its Default values comes from the previously mentioned sequence which generates unique id's.
-  customer_id           NUMBER    NOT NULL, -- customer_id (number)
+  appointment_id        NUMBER    DEFAULT appointments_seq.nextval NOT NULL, 
+  customer_id           NUMBER    NOT NULL, 
   groomer_id            NUMBER    NOT NULL, 
   pet_id                NUMBER    NOT NULL, 
-  appointment_date      DATE      NOT NULL, -- this column stores the date of an appointment event;
-  appointment_cancelled NUMBER(1) DEFAULT 0 NOT NULL CHECK (appointment_cancelled IN (0, 1)), -- 'CHECK (appointment_cancelled IN (0, 1))' checks if the number is 1 or 0,  if the appointment was cancelled:  1 - True, 0 - False, if no values are inserted it inserts Default - 0 (Not cancelled)
-  payment_id            NUMBER, -- column that references other table (payments)
+  appointment_date      DATE      NOT NULL, 
+  appointment_cancelled CHAR(1) DEFAULT 'N' CHECK (appointment_cancelled IN ('Y', 'N')), 
   creation_date  DATE DEFAULT SYSDATE NOT NULL,
   last_updated_by VARCHAR2(20 BYTE),
   last_update    DATE DEFAULT SYSDATE,
-  CONSTRAINT pk_appointments PRIMARY KEY (appointment_id) -- this constraint creates primary key for this table (appointment_id)
+  CONSTRAINT pk_appointments PRIMARY KEY (appointment_id) 
 );
+
 
 CREATE SEQUENCE payments_seq START WITH 1;
 CREATE TABLE payments
 (
   payment_id     NUMBER   DEFAULT payments_seq.nextval NOT NULL,
   amount         NUMBER   NOT NULL,
-  payment_date   DATE     NOT NULL,
+  payment_date   DATE     DEFAULT SYSDATE NOT NULL,
   appointment_id NUMBER   NOT NULL,
   payment_method VARCHAR2(10 BYTE) NOT NULL,
+  created_by     VARCHAR2(20 BYTE),
+  creation_date  DATE DEFAULT SYSDATE,
+  last_updated_by VARCHAR2(20 BYTE),
+  last_update    DATE DEFAULT SYSDATE,
+  
   CONSTRAINT pk_payments PRIMARY KEY (payment_id)
 );
 
-CREATE TABLE services
+
+CREATE SEQUENCE groomer_schedule_seq START WITH 1;
+CREATE TABLE groomer_schedule
 (
-  service_id     NUMBER   NOT NULL, -- not creating a sequence for services, because there are not too many of them in the business, this would be imported manually
-  price          NUMBER   NOT NULL,
-  description    VARCHAR2(200 BYTE) NOT NULL,
-  appointment_id NUMBER   NOT NULL,
+  schedule_id    NUMBER DEFAULT groomer_schedule_seq.nextval NOT NULL,
+  groomer_id     NUMBER NOT NULL,
+  appointment_id NUMBER NOT NULL,
+  start_time     DATE NOT NULL,
+  end_time       DATE NOT NULL,
+  status         VARCHAR2(20 BYTE) DEFAULT 'Available',
+  notes          VARCHAR2(255 BYTE),
   created_by     VARCHAR2(20 BYTE),
-  creation_date  DATE DEFAULT SYSDATE NOT NULL,
+  creation_date  DATE DEFAULT SYSDATE,
   last_updated_by VARCHAR2(20 BYTE),
   last_update    DATE DEFAULT SYSDATE,
-  CONSTRAINT pk_services PRIMARY KEY (service_id)
+  CONSTRAINT pk_groomer_schedule PRIMARY KEY (schedule_id)
 );
 
-CREATE TABLE service_items
+
+CREATE TABLE appointment_service
 (
-  item_id    NUMBER NOT NULL,
-  quantity   NUMBER NOT NULL,
-  service_id NUMBER NOT NULL,
+  appointment_id NUMBER NOT NULL,
+  service_id     NUMBER NOT NULL
+);
+
+CREATE SEQUENCE items_seq START WITH 1;
+CREATE TABLE service_inventory
+(
+  item_id    NUMBER DEFAULT items_seq.nextval NOT NULL,
+  item_name  VARCHAR2(100 CHAR) NOT NULL,
+  quantity   NUMBER   NOT NULL,
+  unit_price NUMBER NOT NULL,
+  service_id NUMBER   NOT NULL,
   created_by     VARCHAR2(20 BYTE),
-  creation_date  DATE DEFAULT SYSDATE NOT NULL,
+  creation_date  DATE DEFAULT SYSDATE,
   last_updated_by VARCHAR2(20 BYTE),
   last_update    DATE DEFAULT SYSDATE,
-  CONSTRAINT pk_service_items PRIMARY KEY (item_id)
+  CONSTRAINT pk_service_inventory PRIMARY KEY (item_id)
 );
 
 
 DROP TABLE customers;
 DROP TABLE groomers;
 DROP TABLE appointments;
+DROP TABLE appointments_service;
 DROP TABLE payments;
 DROP TABLE services;
 DROP TABLE service_inventory;
-DROP TABLE service_items;
 DROP TABLE pets;
+DROP TABLE groomer_schedule;
 
 
 
--- Section 2
-/* 
-After table creation, relationships have to link together these tables, 
-so that the data logic and querying (data retrieval) does not break.
-Further explanation of what the code does is written bellow.
-*/
-
--- ERD editor automatically written this code, but i will still leave comments on whats what.
---
-ALTER TABLE appointments                        --this code block says (the others below are the same logic), that in appointments table customer_id column is a foreign key from another table and that it must reference(match) customer_id in the customers table.
-  ADD CONSTRAINT fk_customers_to_appointments -- this whole data model consists of one to many relationships
+----this code block says (the others below are the same logic), that in appointments table customer_id column is a foreign key from another table and that it must reference(match) customer_id in the customers table.
+ALTER TABLE appointments
+  ADD CONSTRAINT fk_customers_to_appointments
     FOREIGN KEY (customer_id)
     REFERENCES customers (customer_id);
---
+
 ALTER TABLE pets
   ADD CONSTRAINT fk_customers_to_pets
     FOREIGN KEY (customer_id)
     REFERENCES customers (customer_id);
-
-ALTER TABLE appointments
-  ADD CONSTRAINT fk_groomers_to_appointments
-    FOREIGN KEY (groomer_id)
-    REFERENCES groomers (groomer_id);
 
 ALTER TABLE payments
   ADD CONSTRAINT fk_appointments_to_payments
     FOREIGN KEY (appointment_id)
     REFERENCES appointments (appointment_id);
 
-ALTER TABLE service_items
-  ADD CONSTRAINT fk_services_to_service_items
+ALTER TABLE service_inventory
+  ADD CONSTRAINT fk_services_to_service_inventory
     FOREIGN KEY (service_id)
     REFERENCES services (service_id);
 
-ALTER TABLE service_items
-  ADD CONSTRAINT fk_service_inventory_to_service_items
-    FOREIGN KEY (item_id)
-    REFERENCES service_inventory (item_id);
-
-ALTER TABLE services
-  ADD CONSTRAINT fk_appointments_to_services
+ALTER TABLE appointment_service
+  ADD CONSTRAINT fk_appointments_to_appointment_service
     FOREIGN KEY (appointment_id)
     REFERENCES appointments (appointment_id);
 
+ALTER TABLE appointment_service
+  ADD CONSTRAINT fk_services_to_appointment_service
+    FOREIGN KEY (service_id)
+    REFERENCES services (service_id);
 
--- Section 3 
-/*
-Index is a performance-tuning method for allowing faster retrieval of records
-it creates an entry for each value that appears in the indexed columns.
-Indexes are created for columns which are accessed most frequently
-*/
+ALTER TABLE groomer_schedule
+  ADD CONSTRAINT fk_appointments_to_groomer_schedule
+    FOREIGN KEY (appointment_id)
+    REFERENCES appointments (appointment_id);
 
+ALTER TABLE groomer_schedule
+  ADD CONSTRAINT fk_groomers_to_groomer_schedule
+    FOREIGN KEY (groomer_id)
+    REFERENCES groomers (groomer_id);
+
+
+-- Indexes
 CREATE INDEX idx_appointments_customer_id ON appointments(customer_id);  -- Index name "idx_appointments_customer_id" for appointments table customer_id column
 CREATE INDEX idx_appointments_groomer_id ON appointments(groomer_id); 
 CREATE INDEX idx_appointments_appointment_date ON appointments(appointment_date); 
@@ -188,6 +197,7 @@ CREATE INDEX idx_service_items_items_id ON service_items(items_id);
 2. Can you explain why you need this check?
       appointment_cancelled NUMBER(1) DEFAULT 0 CHECK (appointment_cancelled IN (0, 1)) NOT NULL, -- 'CHECK (appointment_cancelled IN (0, 1))' checks if the number is 1 or 0,  if the appointment was cancelled:  1 - True, 0 - False, if no values are inserted it inserts Default - 0 (Not cancelled)
       -- it is needed for data integrity, so that other values are not allowed to be entered.
+      -- 05-11 changed it to char values Y/N more logical and easier to read
 
 3. I see you use the type VARCHAR2(200). There are two ways to write VARCHAR2. 
    Can you check and explain the differences between them and which one is better to use?
@@ -206,7 +216,7 @@ CREATE INDEX idx_service_items_items_id ON service_items(items_id);
     -- I have removed NN for customers-last_name, groomers-address, pets-pet_breed.
 
 6. It will be greate that you creation order end with appointments table, because when you create table or objects ussually start from object which unique and do not have foreign key, it is like primary table and this way is more readable.
-    -- Need clarification
+    -- Done
 
 7. Also, you need to add audit columns. This makes it easier to check changes. But not for all tables. In this part you also can create triggers.
     -- Working on it, figuring out triggers need more time
@@ -215,15 +225,16 @@ CREATE INDEX idx_service_items_items_id ON service_items(items_id);
     -- Done
 
 9. For DB you can also add one more object for automatic message info, in which person is getting information of his appointment.
-
+    -- Forgot about this one, adding bookmark
 10. For pets table I suggest to add one more collumn "description". Because if there specific info about pet that are groomer have to know costumer can add it.
     -- Done
 11. Create another table for groomers working calendors.
-
+    -- Done
 12. For sequences, I suggest using more understandable names, rather than short ones.
     -- Fixed
 13. For table Identification suggest to use "table name" + _id, this way easer to see for which table it is, because in some tables of yours is different from table name.
 
 14. For the diagram, not all relationships are added.
+    -- Should be better now
 */
 
