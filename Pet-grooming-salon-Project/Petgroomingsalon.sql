@@ -110,16 +110,28 @@ CREATE TABLE appointment_service
 CREATE SEQUENCE items_seq START WITH 1;
 CREATE TABLE service_inventory
 (
-  item_id    NUMBER DEFAULT items_seq.nextval NOT NULL,
-  item_name  VARCHAR2(100 CHAR) NOT NULL,
-  quantity   NUMBER   NOT NULL,
-  unit_price NUMBER NOT NULL,
-  service_id NUMBER   NOT NULL,
-  created_by     VARCHAR2(20 BYTE),
-  creation_date  DATE DEFAULT SYSDATE,
-  last_updated_by VARCHAR2(20 BYTE),
-  last_update    DATE DEFAULT SYSDATE,
+  item_id           NUMBER DEFAULT items_seq.nextval NOT NULL,
+  item_name         VARCHAR2(100 CHAR) NOT NULL,
+  quantity          NUMBER   NOT NULL,
+  unit_price        NUMBER NOT NULL,
+  service_id        NUMBER   NOT NULL,
+  created_by        VARCHAR2(20 BYTE),
+  creation_date     DATE DEFAULT SYSDATE,
+  last_updated_by   VARCHAR2(20 BYTE),
+  last_update       DATE DEFAULT SYSDATE,
   CONSTRAINT pk_service_inventory PRIMARY KEY (item_id)
+);
+
+CREATE SEQUENCE notification_seq START WITH 1;
+CREATE TABLE appointment_notification
+(
+  notification_id   NUMBER             DEFAULT notification_seq.nextval NOT NULL,
+  appointment_id    NUMBER             NOT NULL,
+  notification_text VARCHAR2(255 BYTE) NOT NULL,
+  notification_date DATE,
+  notification_sent DATE,
+  status            CHAR(1)            DEFAULT 'N'  CHECK (status IN ('Y', 'N')),
+  CONSTRAINT PK_appointment_notification PRIMARY KEY (notification_id)
 );
 
 
@@ -132,6 +144,7 @@ DROP TABLE services;
 DROP TABLE service_inventory;
 DROP TABLE pets;
 DROP TABLE groomer_schedule;
+DROP TABLE appointment_notification;
 
 
 
@@ -175,6 +188,11 @@ ALTER TABLE groomer_schedule
   ADD CONSTRAINT fk_groomers_to_groomer_schedule
     FOREIGN KEY (groomer_id)
     REFERENCES groomers (groomer_id);
+    
+ALTER TABLE appointment_notification
+  ADD CONSTRAINT fk_appointments_to_appointment_notification
+    FOREIGN KEY (appointment_id)
+    REFERENCES appointments (appointment_id);
 
 
 -- Indexes
@@ -184,7 +202,7 @@ CREATE INDEX idx_appointments_appointment_date ON appointments(appointment_date)
 CREATE INDEX idx_payments_payment_id ON payments(payment_id); 
 CREATE INDEX idx_payments_payment_date ON payments(payment_date); 
 CREATE INDEX idx_groomers_status ON groomers(status); 
-CREATE INDEX idx_service_items_items_id ON service_items(items_id); 
+
 
 
 
