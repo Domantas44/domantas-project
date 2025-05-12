@@ -6,7 +6,7 @@ The tables were chosen according to similar businesses and their working princip
 This data model should cover most of the average needs of a grooming salon.
 
 # 2. Entity definitions (Tables)
-In total there are 9 data tables in which business data is going to be stored:
+In total there are 10 data tables in which business data is going to be stored:
 
 * customers;
 * groomers;
@@ -18,7 +18,9 @@ In total there are 9 data tables in which business data is going to be stored:
 * groomers_schedule;
 * appointment_service
 * service_inventory;
+* appointment_notification;
 
+*Explanation structure is not the same in every table, because some things are going to clear from the first table further down, so there is no need to explain some of the things two or more times*  
 
 CUSTOMERS TABLE
 |COLUMN_NAME  | DATA_TYPE         | NULLABLE | DATA_DEFAULT                             
@@ -29,15 +31,18 @@ CUSTOMERS TABLE
 | PHONE       | NUMBER            | No       | (null)                                                     
 | EMAIL       | VARCHAR(200 BYTE) | NO       | (null)   
 
-    TABLE PURPOSE
-Customers table stores data about first and last name of the customer, their phone number and email.
+TABLE PURPOSE
 
-    TABLE STRUCTURE
-In the "customers" table above there are listed column names and data types. "Nullable" means if the data must be entered or not and the default data.
+* Customers table stores data about first and last name of the customer, their phone number and email.
+
+TABLE STRUCTURE
+
+* In the "customers" table above there are listed column names and data types. "Nullable" means if the data must be entered or not and the default data.
 Every customer can be identified by their primary key column "CUSTOMER_ID". The id's are automatically generated once new client is added, this can be seen as "SYSTEM"."CUSTOMERS_SEQ"."NEXTVAL" this creates a sequence which generates only unique numbers for customer_id column.
 
-    DATA TYPES
-"VARCHAR2" is data type used for variable character(or symbol) length in another words text or symbols.
+DATA TYPES
+
+* "VARCHAR2" is data type used for variable character(or symbol) length in another words text or symbols.
 "NUMBER" is self-explanatory.
 
 
@@ -58,17 +63,20 @@ GROOMERS TABLE
 | LAST_UPDATED_BY | VARCHAR2(20 BYTE) | Yes      | (null)                         
 | LAST_UPDATE     | DATE              | Yes      | SYSDATE                                                
 
-    TABLE PURPOSE
-Groomers table stores data about first and last name of the groomer (employee), groomer status, salary, email, phone, birth date and address.
+TABLE PURPOSE
 
-    TABLE STRUCTURE
-Every groomer can be identified by their primary key column "GROOMER_ID" and the same sequence ID creating logic will continue throughout the data model. 
-The table also automatically logs information about when groomer was added to the database, when was this information updated and by whom.
+* Groomers table stores data about first and last name of the groomer (employee), groomer status, salary, email, phone, birth date and address.
 
-    DATA TYPES
-"VARCHAR2 BYTE AND CHAR Difference - "BYTE" counts how much space each letter or symbol takes in memory, which works well for English and numbers. "CHAR" counts the actual number of letters, which is better for other languages where a single letter can take more space sometimes up to 4 bytes. So when importing data you cannot surpass the amount that is specified.
-"DATE" is self-explanatory.
-DATA_DEFAULT "SYSDATE" logs system date (current time)
+TABLE STRUCTURE
+
+* Every groomer can be identified by their primary key column "GROOMER_ID" and the same sequence ID creating logic will continue throughout the data model. 
+* The table also automatically logs information about when groomer was added to the database, when was this information updated and by whom.
+
+DATA TYPES
+
+* "VARCHAR2 BYTE AND CHAR Difference - "BYTE" counts how much space each letter or symbol takes in memory, which works well for English and numbers. "CHAR" counts the actual number of letters, which is better for other languages where a single letter can take more space sometimes up to 4 bytes. So when importing data you cannot surpass the amount that is specified.
+* "DATE" is self-explanatory.
+* DATA_DEFAULT "SYSDATE" logs system date (current time)
 
 
 ### SERVICES TABLE
@@ -80,7 +88,8 @@ DATA_DEFAULT "SYSDATE" logs system date (current time)
 | DESCRIPTION | VARCHAR2(200 BYTE)| No       | (null)                           
 
 TABLE PURPOSE 
-The table stores data about all the services that grooming salon provides.
+
+* The table stores data about all the services that grooming salon provides.
 
 ### PETS TABLE
 | COLUMN_NAME | DATA_TYPE          | NULLABLE | DATA_DEFAULT                          
@@ -92,8 +101,9 @@ The table stores data about all the services that grooming salon provides.
 | PET_BREED   | VARCHAR2(20 BYTE)  | Yes      | (null)  
 | DESCRIPTION | VARCHAR2(255 BYTE) | Yes      | (null)  
 
-    TABLE PURPOSE
-Pets table stores data about customers pets, it consists of pet_id, customer_id that shows which customer_id has which pet, pets name, type and it's breed.
+TABLE PURPOSE
+
+* Pets table stores data about customers pets, it consists of pet_id, customer_id that shows which customer_id has which pet, pets name, type and it's breed.
 
 
 ### APPOINTMENTS TABLE
@@ -110,11 +120,13 @@ Pets table stores data about customers pets, it consists of pet_id, customer_id 
 | LAST_UPDATED_BY      | VARCHAR2(20 BYTE)| Yes      | (null)                           
 | LAST_UPDATE          | DATE             | Yes      | SYSDATE  
 
-    TABLE PURPOSE
-This is the main table where appointments will be recorded. 
+TABLE PURPOSE
 
-    DATA TYPES
-appointment_cancelled column logs whether single appointment was cancelled or not. 
+* This is the main table where appointments will be recorded. 
+
+DATA TYPES
+
+* appointment_cancelled column logs whether single appointment was cancelled or not. 
 Y = True, it was cancelled N = False, it was not cancelled, if it was not registered the Default is logged as N = Not cancelled. 
 
 ### PAYMENTS TABLE
@@ -130,8 +142,9 @@ Y = True, it was cancelled N = False, it was not cancelled, if it was not regist
 | LAST_UPDATED_BY | VARCHAR2(20 BYTE)| Yes      | (null)                         
 | LAST_UPDATE     | DATE             | Yes      | SYSDATE           
 
-    TABLE PURPOSE
-Payments table stores data everything about the payments - payment amount, method, date, who and when updated the last info about the payment.
+TABLE PURPOSE
+
+* Payments table stores data everything about the payments - payment amount, method, date, who and when updated the last info about the payment.
 
 
 ### SERVICE_INVENTORY TABLE
@@ -146,9 +159,9 @@ Payments table stores data everything about the payments - payment amount, metho
 | LAST_UPDATED_BY| VARCHAR2(20 BYTE) | Yes      | (null)                     
 | LAST_UPDATE    | DATE              | Yes      | SYSDATE                                    
 
-    TABLE PURPOSE
-Service_inventory table stores data about what items are stored in the inventory for the services that your Grooming salon provides.
-It consists of item_id, item_name, unit and unit_price.
+TABLE PURPOSE
+
+* Service_inventory table stores data about what items are stored in the inventory for the services that your Grooming salon provides. It consists of item_id, item_name, unit and unit_price.
 
 ### GROOMERS_SCHEDULE TABLE
 | COLUMN_NAME     | DATA_TYPE         | NULLABLE | DATA_DEFAULT                     
@@ -165,8 +178,9 @@ It consists of item_id, item_name, unit and unit_price.
 | LAST_UPDATED_BY | VARCHAR2(20 BYTE) | Yes      | (null)                           
 | LAST_UPDATE     | DATE              | Yes      | SYSDATE    
 
-    TABLE PURPOSE
-The Groomers_schedule table stores data about groomers worktime, availability of the groomer, when the appointment was started and when it was finished.
+TABLE PURPOSE
+
+* The Groomers_Schedule table stores data about groomers worktime, availability of the groomer, when the appointment was started and when it was finished.
 
 ### APPOINTMENT_SERVICE TABLE
 | COLUMN_NAME   | DATA_TYPE | NULLABLE | DATA_DEFAULT 
@@ -174,9 +188,9 @@ The Groomers_schedule table stores data about groomers worktime, availability of
 | APPOINTMENT_ID| NUMBER    | No       | (null)       
 | SERVICE_ID    | NUMBER    | No       | (null)       
 
-This is called "Junction table", it is used to connect "appointments" and "services" tables with foreign keys.
+* This is called "Junction table", it is used to connect "appointments" and "services" tables with foreign keys.
 This enables multiple services per appointment.
-More about relationships and its quirks is explained in Relationships part.
+* More about relationships and its quirks is explained in Relationships part.
 
 ### SERVICE_INVENTORY TABLE
 | COLUMN_NAME     | DATA_TYPE         | NULLABLE | DATA_DEFAULT               
@@ -190,12 +204,26 @@ More about relationships and its quirks is explained in Relationships part.
 | LAST_UPDATED_BY | VARCHAR2(20 BYTE) | Yes      | (null)                     
 | LAST_UPDATE     | DATE              | Yes      | SYSDATE                    
 
-    TABLE PURPOSE
-The table stores inventory item data for the services that the salon provides.
+TABLE PURPOSE
 
-# Relationships
-![This is an alt text.](https://raw.githubusercontent.com/Domantas44/domantas-project/refs/heads/main/Pet-grooming-salon-Project/Relationships%20visualized.png?token=GHSAT0AAAAAADCDPA4NQUBVNQ5KEWWELSDI2BAZCOA)
+* The table stores inventory item data for the services that the salon provides.
+### APPOINTMENT_NOTIFICATION TABLE
+| COLUMN_NAME       | DATA_TYPE          | NULLABLE | DATA_DEFAULT                      
+|-------------------|--------------------|----------|-----------------------------------
+| NOTIFICATION_ID   | NUMBER             | No       | "SYSTEM"."NOTIFICATION_SEQ"."NEXTVAL" 
+| APPOINTMENT_ID    | NUMBER             | No       | (null)                           
+| NOTIFICATION_TEXT | VARCHAR2(255 BYTE) | No       | (null)                            
+| NOTIFICATION_DATE | DATE               | Yes      | (null)                            
+| NOTIFICATION_SENT | DATE               | Yes      | (null)                            
+| STATUS            | CHAR(1)            | Yes      | 'N'                               
 
-To be continued..
+# Relationships (Schema)
+![Grooming salon schema.](https://i.imgur.com/ProE3ZM.png)
 
+The Grooming Salon schema can be seen in the visualization above.
 
+* Data relationships creates connections between tables based on specific logic, ensuring data integrity and consistency. It allows joining data across tables, which can be represented for further business needs.
+
+* For in-depth information, the schema can be seen in .vuerd.json file which leads to ERD Editor.
+
+Relationship explanation...
