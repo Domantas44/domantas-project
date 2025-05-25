@@ -4,7 +4,7 @@ CREATE TABLE customers
   customers_id NUMBER   DEFAULT customers_seq.nextval NOT NULL,
   first_name  VARCHAR2(20 CHAR) NOT NULL,
   last_name   VARCHAR2(20 CHAR),
-  phone       NUMBER NOT NULL,
+  phone       VARCHAR2(20 BYTE) NOT NULL,
   email       VARCHAR(200 BYTE) NOT NULL,
   CONSTRAINT pk_customers PRIMARY KEY (customers_id)
 );
@@ -18,7 +18,7 @@ CREATE TABLE groomers
   status          VARCHAR2(20 BYTE) NOT NULL,
   salary          NUMBER   NOT NULL,
   email           VARCHAR2(20 BYTE) NOT NULL,
-  phone           NUMBER   NOT NULL,
+  phone           VARCHAR2(20 BYTE)  NOT NULL,
   birth_date      DATE,
   address         VARCHAR2(20 CHAR),
   created_by      VARCHAR2(20 BYTE),

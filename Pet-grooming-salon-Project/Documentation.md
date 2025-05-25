@@ -27,7 +27,7 @@ CUSTOMERS TABLE
 | CUSTOMER_ID | NUMBER            | No       | "SYSTEM"."CUSTOMERS_SEQ"."NEXTVAL"  
 | FIRST_NAME  | VARCHAR2(20 BYTE) | No       | (null)           
 | LAST_NAME   | VARCHAR2(20 BYTE) | Yes      | (null)     
-| PHONE       | NUMBER            | No       | (null)                                                     
+| PHONE       | VARCHAR2(20 BYTE) | No       | (null)                                                     
 | EMAIL       | VARCHAR(200 BYTE) | NO       | (null)   
 
 ### Table Overview
@@ -54,7 +54,7 @@ GROOMERS TABLE
 | STATUS          | VARCHAR2(20 BYTE) | No       | (null)                         
 | SALARY          | NUMBER            | No       | (null)                         
 | EMAIL           | VARCHAR2(20 BYTE) | No       | (null)                         
-| PHONE           | NUMBER            | No       | (null)                         
+| PHONE           | VARCHAR2(20 BYTE) | No       | (null)                         
 | BIRTH_DATE      | DATE              | Yes      | (null)                         
 | ADDRESS         | VARCHAR2(20 CHAR) | Yes      | (null)                         
 | CREATED_BY      | VARCHAR2(20 BYTE) | Yes      | (null)                         
@@ -240,15 +240,15 @@ Relationships are meaningful associations between tables that contain related in
 
 There are 3 main relationship types:
 
-* One-to-one. When each item in each table only appears once. For example, each employee (employees table) can have only one company car (cars table) to use. 
+* One-to-one. When each item in each table only appears once. For example (not this data model), each employee (employees table) can have only one company car (cars table) to use. 
 
 ![One-to-one.](https://i.imgur.com/Bm8AacG.png)
 
-* One-to-many. When one item in one table can have a relationship to multiple items in another table. For example, one customer (customers table) can have multiple appointments (appointments table).
+* One-to-many. When one item in one table can have a relationship to multiple items in another table. For example(this data model), one customer (customers table) can have multiple appointments (appointments table).
 
 ![One-to-many.](https://i.imgur.com/WaXnKUy.png)
 
-* Many-to-many. When one or more items in one table can have a relationship to one or more items in another table. For example, each order can have multiple products and each product can appear on many orders.
+* Many-to-many. When one or more items in one table can have a relationship to one or more items in another table. For example(not this data model), each order can have multiple products and each product can appear on many orders.
 
 ![Many-to-many.](https://i.imgur.com/10IWM7P.png)
 
