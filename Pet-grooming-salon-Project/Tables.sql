@@ -42,7 +42,7 @@ CREATE SEQUENCE pets_seq START WITH 1;
 CREATE TABLE pets
 (
   pets_id      NUMBER   DEFAULT pets_seq.nextval NOT NULL,
-  customer_id  NUMBER   NOT NULL,
+  customers_id  NUMBER   NOT NULL,
   pet_name     VARCHAR2(20 CHAR) NOT NULL,
   pet_type     VARCHAR2(20 CHAR) NOT NULL,
   pet_breed    VARCHAR2(20 CHAR),
@@ -54,9 +54,9 @@ CREATE SEQUENCE appointments_seq START WITH 1;
 CREATE TABLE appointments 
 (
   appointments_id       NUMBER    DEFAULT appointments_seq.nextval NOT NULL, 
-  customer_id           NUMBER    NOT NULL, 
-  groomer_id            NUMBER    NOT NULL, 
-  pet_id                NUMBER    NOT NULL, 
+  customers_id           NUMBER    NOT NULL, 
+  groomers_id            NUMBER    NOT NULL, 
+  pets_id                NUMBER    NOT NULL, 
   appointment_date      DATE      NOT NULL, 
   appointment_cancelled CHAR(1) DEFAULT 'N' CHECK (appointment_cancelled IN ('Y', 'N')), 
   created_by            VARCHAR2(20 BYTE),
@@ -73,7 +73,7 @@ CREATE TABLE payments
   payments_id     NUMBER   DEFAULT payments_seq.nextval NOT NULL,
   amount          NUMBER   NOT NULL,
   payment_date    DATE     DEFAULT SYSDATE NOT NULL,
-  appointment_id  NUMBER   NOT NULL,
+  appointments_id  NUMBER   NOT NULL,
   payment_method  VARCHAR2(10 BYTE) NOT NULL,
   created_by      VARCHAR2(20 BYTE),
   creation_date   DATE DEFAULT SYSDATE,
@@ -88,8 +88,8 @@ CREATE SEQUENCE groomer_schedule_seq START WITH 1;
 CREATE TABLE groomer_schedule
 (
   groomer_schedule_id    NUMBER DEFAULT groomer_schedule_seq.nextval NOT NULL,
-  groomer_id      NUMBER NOT NULL,
-  appointment_id  NUMBER NOT NULL,
+  groomers_id      NUMBER NOT NULL,
+  appointments_id  NUMBER NOT NULL,
   start_time      DATE NOT NULL,
   end_time        DATE NOT NULL,
   status          VARCHAR2(20 BYTE) DEFAULT 'Available',
@@ -105,7 +105,7 @@ CREATE TABLE groomer_schedule
 CREATE TABLE appointment_service
 (
   appointments_id NUMBER NOT NULL,
-  service_id     NUMBER NOT NULL
+  services_id     NUMBER NOT NULL
 );
 
 CREATE SEQUENCE items_seq START WITH 1;
@@ -115,7 +115,7 @@ CREATE TABLE service_inventory
   item_name             VARCHAR2(100 CHAR) NOT NULL,
   quantity              NUMBER   NOT NULL,
   unit_price            NUMBER NOT NULL,
-  service_id            NUMBER   NOT NULL,
+  services_id           NUMBER   NOT NULL,
   created_by            VARCHAR2(20 BYTE),
   creation_date         DATE DEFAULT SYSDATE,
   last_updated_by       VARCHAR2(20 BYTE),
@@ -213,7 +213,7 @@ ALTER TABLE appointment_notification
 
 4. For better understanding of tables, I suggest adding comments to the attributes.
    Can you edit your script?
-    -- documentation filled
+    -- documentation filled and the same comments now in tables themselves
 
 5. I see that you use NOT NULL everywhere. Is it really necessary? For some attributes, you might not need to use it.
    Can you review and make changes where you think it is not necessary? If it is necessary can you explain why you think that?

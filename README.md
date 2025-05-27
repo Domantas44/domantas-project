@@ -148,22 +148,6 @@ Y = True, it was cancelled N = False, it was not cancelled, if it was not regist
 Payments table stores data everything about the payments - payment amount, method, date, who and when updated the last info about the payment.
 
 
-### SERVICE_INVENTORY TABLE
-| COLUMN_NAME         | DATA_TYPE         | NULLABLE | DATA_DEFAULT               
-|---------------------|-------------------|----------|----------------------------
-| SERVICE_INVENTORY_ID| NUMBER            | No       | "SYSTEM"."ITEMS_SEQ"."NEXTVAL" 
-| ITEM_NAME           | VARCHAR2(50 CHAR) | No       | (null)                    
-| UNIT                | NUMBER            | No       | (null)                     
-| UNIT_PRICE          | NUMBER            | No       | (null)                     
-| CREATION_DATE       | DATE              | No       | SYSDATE                    
-| CREATED_BY          | VARCHAR2(20 BYTE) | Yes      | (null)                     
-| LAST_UPDATED_BY     | VARCHAR2(20 BYTE) | Yes      | (null)                     
-| LAST_UPDATE         | DATE              | Yes      | SYSDATE                                    
-
-### Table Overview
-
-Service_inventory table stores data about what items are stored in the inventory for the services that your Grooming salon provides. It consists of item_id, item_name, unit and unit_price.
-
 ### GROOMERS_SCHEDULE TABLE
 | COLUMN_NAME         | DATA_TYPE         | NULLABLE | DATA_DEFAULT                     
 |---------------------|-------------------|----------|----------------------------------
@@ -194,21 +178,24 @@ This enables multiple services per appointment as well as multiple appointments 
 
 More about relationships and its quirks is explained in Relationships part.
 
+
 ### SERVICE_INVENTORY TABLE
 | COLUMN_NAME         | DATA_TYPE         | NULLABLE | DATA_DEFAULT               
 |---------------------|-------------------|----------|----------------------------
 | SERVICE_INVENTORY_ID| NUMBER            | No       | "SYSTEM"."ITEMS_SEQ"."NEXTVAL" 
-| ITEM_NAME           | VARCHAR2(100 CHAR)| No       | (null)                     
-| QUANTITY            | NUMBER            | No       | (null)                     
-| SERVICES_ID         | NUMBER            | No       | (null)                     
+| ITEM_NAME           | VARCHAR2(50 CHAR) | No       | (null)   
+| QUANTITY            |NUMBER             | No       | (null)                           
+| UNIT_PRICE          | NUMBER            | No       | (null)       
+| SERVICES_ID         | NUMBER            | No       | (null)     
+| CREATION_DATE       | DATE              | No       | SYSDATE                    
 | CREATED_BY          | VARCHAR2(20 BYTE) | Yes      | (null)                     
-| CREATION_DATE       | DATE              | Yes      | SYSDATE                    
 | LAST_UPDATED_BY     | VARCHAR2(20 BYTE) | Yes      | (null)                     
-| LAST_UPDATE         | DATE              | Yes      | SYSDATE                    
+| LAST_UPDATE         | DATE              | Yes      | SYSDATE                                    
 
 ### Table Overview
 
-The table stores inventory item data for the services that the salon provides.
+Service_inventory table stores data about what items are stored in the inventory for the services that your Grooming salon provides. It consists of item_id, item_name, unit and unit_price.
+
 
 ### APPOINTMENT_NOTIFICATION TABLE
 | COLUMN_NAME                | DATA_TYPE          | NULLABLE | DATA_DEFAULT                      
