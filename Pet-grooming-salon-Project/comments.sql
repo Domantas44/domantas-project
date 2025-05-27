@@ -20,6 +20,9 @@ COMMENT ON TABLE APPOINTMENTS IS 'This is the main table where appointments will
 COMMENT ON TABLE PAYMENTS IS 'Payments table stores data everything about the payments - payment amount, method, date, who and 
 when updated the last info about the payment.';
 
+COMMENT ON TABLE GROOMERS_SCHEDULE IS 'The Groomers_Schedule table stores data about groomers worktime, 
+availability of the groomer, when the appointment was started and when it was finished.';
+
 COMMENT ON TABLE SERVICE_INVENTORY IS 'Service_inventory table stores data about what items are stored in the inventory for the services 
 that your Grooming salon provides. It consists of item_id, item_name, unit and unit_price.';
 
@@ -28,7 +31,6 @@ This enables multiple services per appointment as well as multiple appointments 
 
 COMMENT ON TABLE APPOINTMENT_NOTIFICATION IS 'This table is used for notifying the customer about the appointment.';
 
-COMMENT ON TABLE customers IS 'This table stores customer contact information: first and last name, phone and email.';
 
 
 
