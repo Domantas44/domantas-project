@@ -1,0 +1,30 @@
+I can see that you understand the difference between CHAR and BYTE. However, I recommend using the CHAR type. 
+Since we typically use Unicode (UTF-8) as the standard in programming, CHAR is a safer and more predictable choice in that context.
+
+I just wanted to check if you understood why I suggested using the COMMENT function for columns and tables. 
+Because sometimes the documentation does not provide enough detail about what is actually stored in the tables. 
+In your case, the descriptions are a bit general.
+So when I try to figure out what data you are storing, it gets a bit confusing.  
+For example, groomer table - what do you want to save in STATUS column.
+
+CREATED_BY and CREATED_DATE should always be set as NOT NULL. When you insert the first record, the system should automatically save who created it and when. 
+That is usually handled by an insert trigger. 
+If, for some reason, the trigger does not work, you will get an error because those fields can not be null.
+Also do not use default values to audit attributes, for that is created triggers. Also default values are used for NOT NULL values.
+
+I noticed you like using the STATUS attribute a lot — do you think it might be possible to use a more specific name for it? 
+That could help make things a bit clearer when reading the code or working with the data.
+
+I took a look at the triggers. When you are using the INSERT method, you should not include this syntax because it is meant for the UPDATE part:
+:NEW.last_updated_by := USER;
+:NEW.last_update := SYSDATE;
+When a record is added for the first time, those columns are supposed to be empty. They are meant to be filled in only when the record is updated later.
+
+About ER diagram.
+if I understand correctly, can one appointment have only one payment method? If that is the case, then the relationship should be one-to-one, not one-to-many.
+It is the same with appoinment_notification and appoinments.
+
+I would recommend taking a look at how uniqueness can be defined in a table. It’s a good way to make sure certain values like IDs or emails do not get duplicated when they should not.
+A primary key (which is always unique and not null) which one you use and another one which i did not see in your code is a unique constraint which can be on one or more columns.
+
+Now, I would like you to create some scenarios you can use to practice working with data using CRUD operations. Once you are comfortable with CRUD, you can move on to writing simple functions and procedures.
