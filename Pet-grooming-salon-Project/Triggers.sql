@@ -25,9 +25,6 @@ BEGIN
     IF INSERTING THEN
         :NEW.created_by := USER;
         :NEW.creation_date := SYSDATE;
-        :NEW.last_updated_by := USER;
-        :NEW.last_update := SYSDATE;
-        
     ELSIF UPDATING THEN
         :NEW.last_updated_by := USER;
         :NEW.last_update := SYSDATE;
@@ -41,9 +38,6 @@ BEGIN
     IF INSERTING THEN
         :NEW.created_by := USER;
         :NEW.creation_date := SYSDATE;
-        :NEW.last_updated_by := USER;
-        :NEW.last_update := SYSDATE;
-        
     ELSIF UPDATING THEN
         :NEW.last_updated_by := USER;
         :NEW.last_update := SYSDATE;
@@ -57,9 +51,6 @@ BEGIN
     IF INSERTING THEN
         :NEW.created_by := USER;
         :NEW.creation_date := SYSDATE;
-        :NEW.last_updated_by := USER;
-        :NEW.last_update := SYSDATE;
-        
     ELSIF UPDATING THEN
         :NEW.last_updated_by := USER;
         :NEW.last_update := SYSDATE;
@@ -73,9 +64,6 @@ BEGIN
     IF INSERTING THEN
         :NEW.created_by := USER;
         :NEW.creation_date := SYSDATE;
-        :NEW.last_updated_by := USER;
-        :NEW.last_update := SYSDATE;
-        
     ELSIF UPDATING THEN
         :NEW.last_updated_by := USER;
         :NEW.last_update := SYSDATE;
@@ -89,9 +77,6 @@ BEGIN
     IF INSERTING THEN
         :NEW.created_by := USER;
         :NEW.creation_date := SYSDATE;
-        :NEW.last_updated_by := USER;
-        :NEW.last_update := SYSDATE;
-        
     ELSIF UPDATING THEN
         :NEW.last_updated_by := USER;
         :NEW.last_update := SYSDATE;
