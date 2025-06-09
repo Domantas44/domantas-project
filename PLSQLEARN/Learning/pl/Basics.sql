@@ -479,11 +479,72 @@ END;
 BEGIN
     OLD_TRANSACTIONS;
 END;
+-- trigger practice
+/*
+1. Audit Trigger on Updates
+Create a trigger that logs updates to a table (e.g. accounts) into an audit_log table whenever the balance changes.
+*/
 
-CREATE SEQUENCE logseq1 START WITH 14 INCREMENT BY 1;
+CREATE OR REPLACE TRIGGER updatelog
+AFTER UPDATE ON accounts
+FOR EACH ROW
+BEGIN
+  IF :OLD.balance <> :NEW.balance THEN
+    INSERT INTO balance_log (
+      account_id,
+      old_balance,
+      new_balance,
+      changed_at
+    ) VALUES (
+      :OLD.account_id,
+      :OLD.balance,
+      :NEW.balance,
+      SYSDATE
+    );
+  END IF;
+END;
+
+/*
+Prevent Deleting VIP Customers
+Write a trigger to prevent deletion of customers who are marked as VIP.
+*/
+
+CREATE OR REPLACE TRIGGER vipdeletionprevention
+BEFORE DELETE ON customers
+FOR EACH ROW
+BEGIN
+    IF :OLD.status = 'VIP' THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Deletion not possible');
+    END IF;
+END;
+
+/*
+Auto-update Timestamp
+Create a trigger that sets last_updated column to SYSDATE whenever a row in the transactions table is updated.
+*/
 
 
+CREATE OR REPLACE TRIGGER AUTOUPDATE
+BEFORE UPDATE ON transactions
+FOR EACH ROW 
 
+BEGIN
+    :NEW.last_updated := SYSDATE
+END;
+
+/*
+Stop Negative Loan Amounts
+Block any insert into the loans table if the loan amount is negative.
+*/
+
+CREATE OR REPLACE TRIGGER negativeloan
+BEFORE INSERT on loans
+FOR EACH ROW
+BEGIN
+    IF :NEW.loan_amount < 0
+    THEN RAISE_APPLICATION_ERROR(-20001, 'Negative values are not allowed');
+    END IF;
+END;
 
 
 

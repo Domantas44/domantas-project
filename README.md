@@ -8,27 +8,27 @@ This data model should cover most of the average needs of a grooming salon.
 # 2. Entity definitions (Tables)
 In total there are 10 data tables in which business data is going to be stored:
  
-* customers;
-* groomers;
-* services;
-* pets;
-* appointments;
-* payments;
-* groomers_schedule;
+* customer;
+* groomer;
+* service;
+* pet;
+* appointment;
+* payment;
+* groomer_schedule;
 * appointment_service
 * service_inventory;
 * appointment_notification;
 
 ###### Explanation structure is not the same in every table, because some things will become clear from the first table further down, so there is no need to explain some of the things two or more times
 
-CUSTOMERS TABLE
+CUSTOMER TABLE
 |COLUMN_NAME  | DATA_TYPE         | NULLABLE | DATA_DEFAULT                             
 |-------------|-------------------|----------|--------
 | CUSTOMER_ID | NUMBER            | No       | "SYSTEM"."CUSTOMERS_SEQ"."NEXTVAL"  
-| FIRST_NAME  | VARCHAR2(20 BYTE) | No       | (null)           
-| LAST_NAME   | VARCHAR2(20 BYTE) | Yes      | (null)     
-| PHONE       | VARCHAR2(20 BYTE) | No       | (null)                                                     
-| EMAIL       | VARCHAR(200 BYTE) | NO       | (null)   
+| FIRST_NAME  | VARCHAR2(20 CHAR) | No       | (null)           
+| LAST_NAME   | VARCHAR2(20 CHAR) | Yes      | (null)     
+| PHONE       | VARCHAR2(20 CHAR) | No       | (null)                                                     
+| EMAIL       | VARCHAR(200 CHAR) | NO       | (null)   
 
 ### Table Overview
 
@@ -36,90 +36,88 @@ CUSTOMERS TABLE
 
 **Structure**
  
-* "Nullable" indicates if the data must be entered or not.
-* Every customer can be identified by their primary key column "CUSTOMER_ID". The id's are automatically generated once new client is added, this can be seen as "SYSTEM"."CUSTOMERS_SEQ"."NEXTVAL" this creates a sequence which generates only unique numbers for customer_id column.
+* Each customer is identified by the primary key column CUSTOMER_ID, which is automatically generated using the sequence CUSTOMERS_SEQ. This ensures every ID is unique.
+
+* The "Nullable" column tells whether a value must be entered.
 
 **Data types**
 
 * "VARCHAR2" is data type used for variable length text.
-"NUMBER" for numeric values.
+"NUMBER" is used for numeric values.
 
 
-GROOMERS TABLE
+GROOMER TABLE
 | COLUMN_NAME     | DATA_TYPE         | NULLABLE | DATA_DEFAULT                   
 |-----------------|-------------------|----------|--------------------------------
 | GROOMER_ID      | NUMBER            | No       | "SYSTEM"."GROOMERS_SEQ"."NEXTVAL" 
 | FIRST_NAME      | VARCHAR2(20 CHAR) | No       | (null)                         
-| LAST_NAME       | VARCHAR2(20 CHAR) | No       | (null)                         
-| STATUS          | VARCHAR2(20 BYTE) | No       | (null)                         
+| LAST_NAME       | VARCHAR2(20 CHAR) | No       | (null)                                               
 | SALARY          | NUMBER            | No       | (null)                         
-| EMAIL           | VARCHAR2(20 BYTE) | No       | (null)                         
-| PHONE           | VARCHAR2(20 BYTE) | No       | (null)                         
+| EMAIL           | VARCHAR2(20 CHAR) | No       | (null)                         
+| PHONE           | VARCHAR2(20 CHAR) | No       | (null)                         
 | BIRTH_DATE      | DATE              | Yes      | (null)                         
 | ADDRESS         | VARCHAR2(20 CHAR) | Yes      | (null)                         
-| CREATED_BY      | VARCHAR2(20 BYTE) | Yes      | (null)                         
-| CREATION_DATE   | DATE              | Yes      | SYSDATE                        
-| LAST_UPDATED_BY | VARCHAR2(20 BYTE) | Yes      | (null)                         
-| LAST_UPDATE     | DATE              | Yes      | SYSDATE    
+| CREATED_BY      | VARCHAR2(20 CHAR) | No       | (null)                         
+| CREATION_DATE   | DATE              | No       | (null)                       
+| LAST_UPDATED_BY | VARCHAR2(20 CHAR) | Yes      | (null)                         
+| LAST_UPDATE     | DATE              | Yes      | (null)    
 
 ### Table Overview
 
 
-Groomers table stores all the neccessary data about the groomer.
+This table stores all necessary data about a groomer, including audit columns.
 
 **Structure**
 
 * Each groomer can be identified by their primary key column "GROOMER_ID" and the same sequence creating logic will continue throughout the data model. 
-* The table also automatically logs information about when groomer was added to the database, when was this information updated and by whom.
+* The table also automatically logs information about when groomer was added to the database, when was this information updated and by who.
 
 **Data types**
 
-* VARCHAR2 BYTE/CHAR Difference - BYTE limits storage based on the number of bytes used (works best with English and numbers). CHAR limits storage based on the number of characters (better for multilingual data). So when importing data you cannot surpass the lenght that is specified.
 * "DATE" date and time values.
 * DATA_DEFAULT "SYSDATE" logs system date (current time)
 
 
-### SERVICES TABLE
+### SERVICE TABLE
 | COLUMN_NAME | DATA_TYPE         | NULLABLE | DATA_DEFAULT                   
 |-------------|-------------------|----------|--------------------------------
-| SERVICES_ID | NUMBER            | No       | "SYSTEM"."SERVICES_SEQ"."NEXTVAL" 
-| SERVICE_NAME| VARCHAR2(20 BYTE) | No       | (null)                         
+| SERVICE_ID  | NUMBER            | No       | "SYSTEM"."SERVICES_SEQ"."NEXTVAL" 
+| SERVICE_NAME| VARCHAR2(20 CHAR) | No       | (null)                         
 | PRICE       | NUMBER            | No       | (null)                         
-| DESCRIPTION | VARCHAR2(200 BYTE)| No       | (null)                           
+| DESCRIPTION | VARCHAR2(200 CHAR)| No       | (null)                           
 
 ### Table Overview
 
 
 The table stores data about all the services that grooming salon provides.
 
-### PETS TABLE
+### PET TABLE
 | COLUMN_NAME | DATA_TYPE          | NULLABLE | DATA_DEFAULT                          
 |-------------|--------------------|----------|----------------------------------
-| PETS_ID     | NUMBER             | No       | "SYSTEM"."PETS_SEQ"."NEXTVAL"     
-| CUSTOMERS_ID| NUMBER             | No       | (null)                           
-| PET_NAME    | VARCHAR2(20 BYTE)  | No       | (null)        
-| PET_TYPE    | VARCHAR(20 BYTE)   | No       | (null)      
-| PET_BREED   | VARCHAR2(20 BYTE)  | Yes      | (null)  
-| DESCRIPTION | VARCHAR2(255 BYTE) | Yes      | (null)  
+| PET_ID      | NUMBER             | No       | "SYSTEM"."PETS_SEQ"."NEXTVAL"     
+| CUSTOMER_ID | NUMBER             | No       | (null)                           
+| PET_NAME    | VARCHAR2(20 CHAR)  | No       | (null)        
+| PET_TYPE    | VARCHAR(20 CHAR)   | No       | (null)      
+| PET_BREED   | VARCHAR2(20 CHAR)  | Yes      | (null)  
+| DESCRIPTION | VARCHAR2(255 CHAR) | Yes      | (null)  
 
 ### Table Overview
 
 Pets table stores data about customers pets, it consists of pet_id, customer_id that shows which customer_id has which pet, pets name, type, breed and the description about that pet.
 
 
-### APPOINTMENTS TABLE
+### APPOINTMENT TABLE
 | COLUMN_NAME          | DATA_TYPE        | NULLABLE | DATA_DEFAULT                     
 |----------------------|------------------|----------|----------------------------------
-| APPOINTMENTS_ID      | NUMBER           | No       | "SYSTEM"."APPOINTMENTS_SEQ"."NEXTVAL" 
-| CUSTOMERS_ID         | NUMBER           | No       | (null)                           
-| GROOMERS_ID          | NUMBER           | No       | (null)                           
-| PETS_ID              | NUMBER           | No       | (null)                           
+| APPOINTMENT_ID       | NUMBER           | No       | "SYSTEM"."APPOINTMENTS_SEQ"."NEXTVAL" 
+| CUSTOMER_ID          | NUMBER           | No       | (null)                                                     
+| PET_ID               | NUMBER           | No       | (null)                           
 | APPOINTMENT_DATE     | DATE             | No       | (null)                           
 | APPOINTMENT_CANCELLED| CHAR(1)          | Yes      | 'N'           
-| CREATED_BY           | VARCHAR2(20 BYTE)| Yes      | (null)                                                 
-| CREATION_DATE        | DATE             | No       | SYSDATE                          
-| LAST_UPDATED_BY      | VARCHAR2(20 BYTE)| Yes      | (null)                           
-| LAST_UPDATE          | DATE             | Yes      | SYSDATE  
+| CREATED_BY           | VARCHAR2(20 CHAR)| No       | (null)                                                 
+| CREATION_DATE        | DATE             | No       | (null)                         
+| LAST_UPDATED_BY      | VARCHAR2(20 CHAR)| Yes      | (null)                           
+| LAST_UPDATE          | DATE             | Yes      | (null) 
 
 ### Table Overview
 
@@ -130,38 +128,38 @@ This is the main table where appointments will be recorded.
 * appointment_cancelled column logs whether single appointment was cancelled or not. 
 Y = True, it was cancelled N = False, it was not cancelled, if it was not registered the Default is logged as N = Not cancelled. 
 
-### PAYMENTS TABLE
+### PAYMENT TABLE
 | COLUMN_NAME     | DATA_TYPE        | NULLABLE | DATA_DEFAULT                   
 |-----------------|------------------|----------|--------------------------------
-| PAYMENTS_ID     | NUMBER           | No       | "SYSTEM"."PAYMENTS_SEQ"."NEXTVAL" 
+| PAYMENT_ID      | NUMBER           | No       | "SYSTEM"."PAYMENTS_SEQ"."NEXTVAL" 
 | AMOUNT          | NUMBER           | No       | (null)                         
 | PAYMENT_DATE    | DATE             | No       | (null)                         
-| APPOINTMENTS_ID | NUMBER           | No       | (null)                         
-| PAYMENT_METHOD  | VARCHAR2(10 BYTE)| No       | (null)                         
-| CREATED_BY      | VARCHAR2(20 BYTE)| Yes      | (null)                         
-| CREATION_DATE   | DATE             | Yes      | SYSDATE                        
-| LAST_UPDATED_BY | VARCHAR2(20 BYTE)| Yes      | (null)                         
-| LAST_UPDATE     | DATE             | Yes      | SYSDATE           
+| APPOINTMENT_ID  | NUMBER           | No       | (null)                         
+| PAYMENT_METHOD  | VARCHAR2(10 CHAR)| No       | (null)                         
+| CREATED_BY      | VARCHAR2(20 CHAR)| No       | (null)                         
+| CREATION_DATE   | DATE             | No       | (null)                     
+| LAST_UPDATED_BY | VARCHAR2(20 CHAR)| Yes      | (null)                         
+| LAST_UPDATE     | DATE             | Yes      | (null)           
 
 ### Table Overview
 
 Payments table stores data everything about the payments - payment amount, method, date, who and when updated the last info about the payment.
 
 
-### GROOMERS_SCHEDULE TABLE
+### GROOMER_SCHEDULE TABLE
 | COLUMN_NAME         | DATA_TYPE         | NULLABLE | DATA_DEFAULT                     
 |---------------------|-------------------|----------|----------------------------------
-| GROOMERS_SCHEDULE_ID| NUMBER            | No       | "SYSTEM"."GROOMER_SCHEDULE_SEQ"."NEXTVAL" 
-| GROOMERS_ID         | NUMBER            | No       | (null)                           
-| APPOINTMENTS_ID     | NUMBER            | No       | (null)                           
+| GROOMER_SCHEDULE_ID | NUMBER            | No       | "SYSTEM"."GROOMER_SCHEDULE_SEQ"."NEXTVAL" 
+| GROOMER_ID          | NUMBER            | No       | (null)                           
+| APPOINTMENT_ID      | NUMBER            | No       | (null)                           
 | START_TIME          | DATE              | No       | (null)                           
 | END_TIME            | DATE              | No       | (null)                           
-| STATUS              | VARCHAR2(20 BYTE) | Yes      | 'Available'                      
-| NOTES               | VARCHAR2(255 BYTE)| Yes      | (null)                           
-| CREATED_BY          | VARCHAR2(20 BYTE) | Yes      | (null)                           
-| CREATION_DATE       | DATE              | Yes      | SYSDATE                          
-| LAST_UPDATED_BY     | VARCHAR2(20 BYTE) | Yes      | (null)                           
-| LAST_UPDATE         | DATE              | Yes      | SYSDATE    
+| GROOMER_STATUS      | VARCHAR2(20 CHAR) | Yes      | 'Available'                      
+| NOTES               | VARCHAR2(255 CHAR)| Yes      | (null)                           
+| CREATED_BY          | VARCHAR2(20 CHAR) | No       | (null)                           
+| CREATION_DATE       | DATE              | No       | (null)                         
+| LAST_UPDATED_BY     | VARCHAR2(20 CHAR) | Yes      | (null)                           
+| LAST_UPDATE         | DATE              | Yes      | (null)   
 
 ### Table Overview
 
@@ -170,8 +168,9 @@ The Groomers_Schedule table stores data about groomers worktime, availability of
 ### APPOINTMENT_SERVICE TABLE
 | COLUMN_NAME    | DATA_TYPE | NULLABLE | DATA_DEFAULT 
 |----------------|-----------|----------|--------------
-| APPOINTMENTS_ID| NUMBER    | No       | (null)       
-| SERVICES_ID    | NUMBER    | No       | (null)       
+| APPOINTMENT_ID | NUMBER    | No       | (null)       
+| SERVICE_ID     | NUMBER    | No       | (null)     
+  
 ### Table Overview
 This is called "Junction table", it is used to connect "appointments" and "services" tables with foreign keys.
 This enables multiple services per appointment as well as multiple appointments per service.
@@ -186,11 +185,11 @@ More about relationships and its quirks is explained in Relationships part.
 | ITEM_NAME           | VARCHAR2(50 CHAR) | No       | (null)   
 | QUANTITY            |NUMBER             | No       | (null)                           
 | UNIT_PRICE          | NUMBER            | No       | (null)       
-| SERVICES_ID         | NUMBER            | No       | (null)     
-| CREATION_DATE       | DATE              | No       | SYSDATE                    
-| CREATED_BY          | VARCHAR2(20 BYTE) | Yes      | (null)                     
-| LAST_UPDATED_BY     | VARCHAR2(20 BYTE) | Yes      | (null)                     
-| LAST_UPDATE         | DATE              | Yes      | SYSDATE                                    
+| SERVICE_ID          | NUMBER            | No       | (null)     
+| CREATION_DATE       | DATE              | No       | (null)                  
+| CREATED_BY          | VARCHAR2(20 CHAR) | No       | (null)                     
+| LAST_UPDATED_BY     | VARCHAR2(20 CHAR) | Yes      | (null)                     
+| LAST_UPDATE         | DATE              | Yes      | (null)                                    
 
 ### Table Overview
 
@@ -201,11 +200,10 @@ Service_inventory table stores data about what items are stored in the inventory
 | COLUMN_NAME                | DATA_TYPE          | NULLABLE | DATA_DEFAULT                      
 |----------------------------|--------------------|----------|-----------------------------------
 | APPOINTMENT_NOTIFICATION_ID| NUMBER             | No       | "SYSTEM"."NOTIFICATION_SEQ"."NEXTVAL" 
-| APPOINTMENTS_ID            | NUMBER             | No       | (null)                           
-| NOTIFICATION_TEXT          | VARCHAR2(255 BYTE) | No       | (null)                            
+| APPOINTMENT_ID             | NUMBER             | No       | (null)                           
+| NOTIFICATION_TEXT          | VARCHAR2(255 CHAR) | No       | (null)                            
 | NOTIFICATION_DATE          | DATE               | Yes      | (null)                            
-| NOTIFICATION_SENT          | DATE               | Yes      | (null)                            
-| STATUS                     | CHAR(1)            | Yes      | 'N'                               
+| NOTIFICATION_SENT          | DATE               | Yes      | SYSDATE                                                    
 
 ### Table Overview
 

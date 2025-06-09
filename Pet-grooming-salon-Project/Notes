@@ -1,30 +1,48 @@
-I can see that you understand the difference between CHAR and BYTE. However, I recommend using the CHAR type. 
+1. I can see that you understand the difference between CHAR and BYTE. However, I recommend using the CHAR type. 
 Since we typically use Unicode (UTF-8) as the standard in programming, CHAR is a safer and more predictable choice in that context.
-
-I just wanted to check if you understood why I suggested using the COMMENT function for columns and tables. 
+-- I have replace all of them with char.
+2. I just wanted to check if you understood why I suggested using the COMMENT function for columns and tables. 
 Because sometimes the documentation does not provide enough detail about what is actually stored in the tables. 
 In your case, the descriptions are a bit general.
 So when I try to figure out what data you are storing, it gets a bit confusing.  
 For example, groomer table - what do you want to save in STATUS column.
+-- Comments have been expanded with more information.
 
-CREATED_BY and CREATED_DATE should always be set as NOT NULL. When you insert the first record, the system should automatically save who created it and when. 
-That is usually handled by an insert trigger. 
+3. CREATED_BY and CREATED_DATE should always be set as NOT NULL. When you insert the first record, the system should automatically save who created it and when. 
+That is usually handled by an insert trigger. -- I have changed it.
 If, for some reason, the trigger does not work, you will get an error because those fields can not be null.
 Also do not use default values to audit attributes, for that is created triggers. Also default values are used for NOT NULL values.
+--QUESTION Im not sure if i completely understood, so i should not set a defaut values for the audit columns and rely on the triggers only?
+-- Also i was thinking about exception handling for triggers, but im not sure if they are neccessary in this case.  
 
-I noticed you like using the STATUS attribute a lot — do you think it might be possible to use a more specific name for it? 
+4. I noticed you like using the STATUS attribute a lot — do you think it might be possible to use a more specific name for it? 
 That could help make things a bit clearer when reading the code or working with the data.
+-- I have removed status column for notification table since its a bit useless to check if notification was sent or not when there is notification_sent column which clearly shows that
+-- also changed the name to 'groomer_status' in groomers schedule table.
 
-I took a look at the triggers. When you are using the INSERT method, you should not include this syntax because it is meant for the UPDATE part:
+5. I took a look at the triggers. When you are using the INSERT method, you should not include this syntax because it is meant for the UPDATE part:
 :NEW.last_updated_by := USER;
 :NEW.last_update := SYSDATE;
 When a record is added for the first time, those columns are supposed to be empty. They are meant to be filled in only when the record is updated later.
+-- now its fixed.
 
-About ER diagram.
+6. About ER diagram.
 if I understand correctly, can one appointment have only one payment method? If that is the case, then the relationship should be one-to-one, not one-to-many.
 It is the same with appoinment_notification and appoinments.
+/* 
+(appointment_notification and appointments) - Changed it
+QUESTION (appointment and payment) But if the customer changes his mind after paying for his initial appointment and needs another service while being at the salon,
+ so when he pays second time it counts as the same appointment, so it can be one to many relationship or not?
+*/
 
-I would recommend taking a look at how uniqueness can be defined in a table. It’s a good way to make sure certain values like IDs or emails do not get duplicated when they should not.
+7. I would recommend taking a look at how uniqueness can be defined in a table. It’s a good way to make sure certain values like IDs or emails do not get duplicated when they should not.
 A primary key (which is always unique and not null) which one you use and another one which i did not see in your code is a unique constraint which can be on one or more columns.
 
+-- A bit challenging to develop them, they need to be checked if im in the right direction.
+
 Now, I would like you to create some scenarios you can use to practice working with data using CRUD operations. Once you are comfortable with CRUD, you can move on to writing simple functions and procedures.
+
+/* My initial thought is to write some basic crud operations inserting/updating data
+into the tables and later on generating lets say 20-30 rows for each table with AI
+and then focusing on coding procedures and so on.
+*/
