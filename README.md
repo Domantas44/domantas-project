@@ -110,8 +110,7 @@ Pets table stores data about customers pets, it consists of pet_id, customer_id 
 | COLUMN_NAME          | DATA_TYPE        | NULLABLE | DATA_DEFAULT                     
 |----------------------|------------------|----------|----------------------------------
 | APPOINTMENT_ID       | NUMBER           | No       | "SYSTEM"."APPOINTMENTS_SEQ"."NEXTVAL" 
-| CUSTOMER_ID          | NUMBER           | No       | (null)                                                     
-| PET_ID               | NUMBER           | No       | (null)                           
+| CUSTOMER_ID          | NUMBER           | No       | (null)                                                                           
 | APPOINTMENT_DATE     | DATE             | No       | (null)                           
 | APPOINTMENT_CANCELLED| CHAR(1)          | Yes      | 'N'           
 | CREATED_BY           | VARCHAR2(20 CHAR)| No       | (null)                                                 
@@ -183,7 +182,7 @@ More about relationships and its quirks is explained in Relationships part.
 |---------------------|-------------------|----------|----------------------------
 | SERVICE_INVENTORY_ID| NUMBER            | No       | "SYSTEM"."ITEMS_SEQ"."NEXTVAL" 
 | ITEM_NAME           | VARCHAR2(50 CHAR) | No       | (null)   
-| QUANTITY            |NUMBER             | No       | (null)                           
+| QUANTITY            | NUMBER            | No       | (null)                           
 | UNIT_PRICE          | NUMBER            | No       | (null)       
 | SERVICE_ID          | NUMBER            | No       | (null)     
 | CREATION_DATE       | DATE              | No       | (null)                  
