@@ -55,8 +55,7 @@ CREATE SEQUENCE appointment_seq START WITH 1;
 CREATE TABLE appointment
 (
   appointment_id        NUMBER    DEFAULT appointment_seq.nextval NOT NULL, 
-  customer_id           NUMBER    NOT NULL,  
-  pet_id                NUMBER    NOT NULL, 
+  customer_id           NUMBER    NOT NULL,
   appointment_date      DATE      NOT NULL, 
   appointment_cancelled CHAR(1) DEFAULT 'N' CHECK (appointment_cancelled IN ('Y', 'N')), 
   created_by            VARCHAR2(20 CHAR) NOT NULL,
@@ -192,29 +191,23 @@ ALTER TABLE appointment_notification
     FOREIGN KEY (appointment_id)
     REFERENCES appointment (appointment_id);
 
+-- Single/Multiple unique columns 
 ALTER TABLE appointment_notification
-  ADD CONSTRAINT unique_appointment_notification_appointment_id
+  ADD CONSTRAINT unique_appointment_notification_and_appointment_id
   UNIQUE (appointment_id);
 
--- Multiple unique columns -- still not finished
 ALTER TABLE appointment
-ADD CONSTRAINT unique_pet_and_appointment_date 
-UNIQUE (customer_id, pet_id, appointment_date);
+  ADD CONSTRAINT unique_pet_and_appointment_date 
+  UNIQUE (customer_id, appointment_date);
 
 ALTER TABLE groomer_schedule
-ADD CONSTRAINT unique_groomer_and_working_time 
-UNIQUE (groomer_id, start_time);
+  ADD CONSTRAINT unique_groomer_and_working_time 
+  UNIQUE (groomer_id, start_time);
 
 ALTER TABLE service_inventory
-ADD CONSTRAINT unique_service_and_item
-UNIQUE (service_id, item_name);
+  ADD CONSTRAINT unique_service_and_item
+  UNIQUE (service_id, item_name);
 
 ALTER TABLE appointment_service
-ADD CONSTRAINT unique_appointment_and_service
-UNIQUE (appointment_id, service_id);
-
-
-
-
-
-
+  ADD CONSTRAINT unique_appointment_and_service
+  UNIQUE (appointment_id, service_id);

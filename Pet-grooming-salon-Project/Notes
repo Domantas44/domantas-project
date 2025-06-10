@@ -38,7 +38,7 @@ QUESTION (appointment and payment) But if the customer changes his mind after pa
 7. I would recommend taking a look at how uniqueness can be defined in a table. It’s a good way to make sure certain values like IDs or emails do not get duplicated when they should not.
 A primary key (which is always unique and not null) which one you use and another one which i did not see in your code is a unique constraint which can be on one or more columns.
 
--- A bit challenging to develop them, they need to be checked if im in the right direction.
+-- Im not sure if i am correct, but those i have written should be the main ones for this model, they need to be checked if im in the right direction.
 
 Now, I would like you to create some scenarios you can use to practice working with data using CRUD operations. Once you are comfortable with CRUD, you can move on to writing simple functions and procedures.
 

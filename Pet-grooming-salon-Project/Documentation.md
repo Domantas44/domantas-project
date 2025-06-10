@@ -110,8 +110,7 @@ Pets table stores data about customers pets, it consists of pet_id, customer_id 
 | COLUMN_NAME          | DATA_TYPE        | NULLABLE | DATA_DEFAULT                     
 |----------------------|------------------|----------|----------------------------------
 | APPOINTMENT_ID       | NUMBER           | No       | "SYSTEM"."APPOINTMENTS_SEQ"."NEXTVAL" 
-| CUSTOMER_ID          | NUMBER           | No       | (null)                                                     
-| PET_ID               | NUMBER           | No       | (null)                           
+| CUSTOMER_ID          | NUMBER           | No       | (null)                                                                           
 | APPOINTMENT_DATE     | DATE             | No       | (null)                           
 | APPOINTMENT_CANCELLED| CHAR(1)          | Yes      | 'N'           
 | CREATED_BY           | VARCHAR2(20 CHAR)| No       | (null)                                                 
