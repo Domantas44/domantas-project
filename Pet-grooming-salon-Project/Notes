@@ -1,6 +1,7 @@
 1. I can see that you understand the difference between CHAR and BYTE. However, I recommend using the CHAR type. 
 Since we typically use Unicode (UTF-8) as the standard in programming, CHAR is a safer and more predictable choice in that context.
 -- I have replace all of them with char.
+
 2. I just wanted to check if you understood why I suggested using the COMMENT function for columns and tables. 
 Because sometimes the documentation does not provide enough detail about what is actually stored in the tables. 
 In your case, the descriptions are a bit general.
@@ -8,12 +9,25 @@ So when I try to figure out what data you are storing, it gets a bit confusing.
 For example, groomer table - what do you want to save in STATUS column.
 -- Comments have been expanded with more information.
 
+/*
+  Regarding the comments, we’ll leave them as they are for now. However, it seems there’s a misunderstanding about the difference between table and column comments.
+  A table comment is meant to describe the overall purpose or content of the entire table. It should not include details about individual columns.
+  On the other hand, a column comment is more useful for explaining the meaning, format, or constraints of specific fields within the table.
+  And still you do not answer about this part - /*For example, groomer table - what do you want to save in STATUS column.*/
+  And I can see one column with the same name is groomer_status in two different tables, is it the same info saved in them?
+*/
+
 3. CREATED_BY and CREATED_DATE should always be set as NOT NULL. When you insert the first record, the system should automatically save who created it and when. 
 That is usually handled by an insert trigger. -- I have changed it.
 If, for some reason, the trigger does not work, you will get an error because those fields can not be null.
 Also do not use default values to audit attributes, for that is created triggers. Also default values are used for NOT NULL values.
 --QUESTION Im not sure if i completely understood, so i should not set a defaut values for the audit columns and rely on the triggers only?
 -- Also i was thinking about exception handling for triggers, but im not sure if they are neccessary in this case.  
+/*
+  For audit columns, you don’t need to set default values, as this is handled by the trigger. That’s exactly what triggers are designed for.
+  In the case you’re working on, there’s no need to add an exception to the trigger—unless you have a specific reason or requirement for it.
+  It really depends on what you intend to include in the exception section.
+*/
 
 4. I noticed you like using the STATUS attribute a lot — do you think it might be possible to use a more specific name for it? 
 That could help make things a bit clearer when reading the code or working with the data.
@@ -35,12 +49,33 @@ QUESTION (appointment and payment) But if the customer changes his mind after pa
  so when he pays second time it counts as the same appointment, so it can be one to many relationship or not?
 */
 
+/*
+   Looking at it from the appointment perspective, there can be a one-to-many relationship between appointments and payments — meaning one appointment can have multiple payments.
+   However, I just noticed that the current structure of the groomer_schedule table is not correct. It should be associated with the services table, because a customer creates an appointment based on the available services and groomer time.
+   For example, if I want to book only a haircut for my pet, I should be able to view the groomer's schedule along with the specific services they offer. Based on that, I can choose a time slot and create an appointment.
+   
+   groomer_schedule → services: Many-to-One
+   (Each schedule entry is linked to a specific service)
+   
+   appointment → groomer_schedule: Many-to-One
+   (Each appointment references a specific schedule entry)
+   
+   This way, the system allows customers to:
+    View available time slots and services.
+    Select a service and time.
+    Create an appointment based on that selection.
+*/
+
 7. I would recommend taking a look at how uniqueness can be defined in a table. It’s a good way to make sure certain values like IDs or emails do not get duplicated when they should not.
 A primary key (which is always unique and not null) which one you use and another one which i did not see in your code is a unique constraint which can be on one or more columns.
 
 -- Im not sure if i am correct, but those i have written should be the main ones for this model, they need to be checked if im in the right direction.
 
 Now, I would like you to create some scenarios you can use to practice working with data using CRUD operations. Once you are comfortable with CRUD, you can move on to writing simple functions and procedures.
+
+/*
+   For CRUD I suggest to write for yourself some scripts to remmember syntax. Also to have more time to look into it because where are diferent types you can use it. Just not only simple ones.
+*/
 
 /* My initial thought is to write some basic crud operations inserting/updating data
 into the tables and later on generating lets say 20-30 rows for each table with AI
