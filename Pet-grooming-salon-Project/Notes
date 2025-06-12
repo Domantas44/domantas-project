@@ -81,3 +81,11 @@ Now, I would like you to create some scenarios you can use to practice working w
 into the tables and later on generating lets say 20-30 rows for each table with AI
 and then focusing on coding procedures and so on.
 */
+
+8. About unique constrains when not to use it on a foreign key. If the relationship is one-to-many, then you should not use a unique constraint.
+For your appointment_service table I suggest not use unique constrain because you have already added foreign key which ensures that:
+Each appointment can have multiple services.
+Each service can be used in multiple appointments.
+But the same service cannot be added twice to the same appointment.
+
+I also noticed that in the appointment table, you're using the appointment_date column. However, this might be unnecessary because the appointment is linked to the groomer's schedule, from which the date can be derived.
