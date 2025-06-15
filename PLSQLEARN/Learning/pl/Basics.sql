@@ -529,7 +529,7 @@ BEFORE UPDATE ON transactions
 FOR EACH ROW 
 
 BEGIN
-    :NEW.last_updated := SYSDATE
+    :NEW.last_updated := SYSDATE;
 END;
 
 /*

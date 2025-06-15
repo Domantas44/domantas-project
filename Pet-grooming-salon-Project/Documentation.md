@@ -32,7 +32,7 @@ CUSTOMER TABLE
 
 ### Table Overview
 
-* This table stores customer contact information: first and last name, phone and email.
+* This table stores customer contact information: first and last name, phone and email. Its a key point for identifying customers across the data system.
 
 **Structure**
  
@@ -46,7 +46,7 @@ CUSTOMER TABLE
 "NUMBER" is used for numeric values.
 
 
-GROOMER TABLE
+### GROOMER TABLE
 | COLUMN_NAME     | DATA_TYPE         | NULLABLE | DATA_DEFAULT                   
 |-----------------|-------------------|----------|--------------------------------
 | GROOMER_ID      | NUMBER            | No       | "SYSTEM"."GROOMERS_SEQ"."NEXTVAL" 
@@ -56,7 +56,8 @@ GROOMER TABLE
 | EMAIL           | VARCHAR2(20 CHAR) | No       | (null)                         
 | PHONE           | VARCHAR2(20 CHAR) | No       | (null)                         
 | BIRTH_DATE      | DATE              | Yes      | (null)                         
-| ADDRESS         | VARCHAR2(20 CHAR) | Yes      | (null)                         
+| ADDRESS         | VARCHAR2(20 CHAR) | Yes      | (null)             
+| GROOMER_STATUS  | VARCHAR2(20 CHAR) | No       | 'Available'             
 | CREATED_BY      | VARCHAR2(20 CHAR) | No       | (null)                         
 | CREATION_DATE   | DATE              | No       | (null)                       
 | LAST_UPDATED_BY | VARCHAR2(20 CHAR) | Yes      | (null)                         
@@ -66,6 +67,7 @@ GROOMER TABLE
 
 
 This table stores all necessary data about a groomer, including audit columns.
+It helps manage groomer schedules and availability.
 
 **Structure**
 
@@ -88,8 +90,8 @@ This table stores all necessary data about a groomer, including audit columns.
 
 ### Table Overview
 
-
 The table stores data about all the services that grooming salon provides.
+Each service has a unique name and a set price with description.
 
 ### PET TABLE
 | COLUMN_NAME | DATA_TYPE          | NULLABLE | DATA_DEFAULT                          
@@ -103,15 +105,15 @@ The table stores data about all the services that grooming salon provides.
 
 ### Table Overview
 
-Pets table stores data about customers pets, it consists of pet_id, customer_id that shows which customer_id has which pet, pets name, type, breed and the description about that pet.
+Pets table stores data about customers pets, it consists of pet_id, customer_id that shows which customer_id owns which pet, pets name, type, breed and the description about that pet.
 
 
 ### APPOINTMENT TABLE
 | COLUMN_NAME          | DATA_TYPE        | NULLABLE | DATA_DEFAULT                     
 |----------------------|------------------|----------|----------------------------------
 | APPOINTMENT_ID       | NUMBER           | No       | "SYSTEM"."APPOINTMENTS_SEQ"."NEXTVAL" 
-| CUSTOMER_ID          | NUMBER           | No       | (null)                                                                           
-| APPOINTMENT_DATE     | DATE             | No       | (null)                           
+| CUSTOMER_ID          | NUMBER           | No       | (null)
+| GROOMER_SCHEDULE_ID | NUMBER            | No       | "SYSTEM"."GROOMER_SCHEDULE_SEQ"."NEXTVAL"                                                                                                 
 | APPOINTMENT_CANCELLED| CHAR(1)          | Yes      | 'N'           
 | CREATED_BY           | VARCHAR2(20 CHAR)| No       | (null)                                                 
 | CREATION_DATE        | DATE             | No       | (null)                         
@@ -121,6 +123,7 @@ Pets table stores data about customers pets, it consists of pet_id, customer_id 
 ### Table Overview
 
 This is the main table where appointments will be recorded. 
+It tracks which customer and pet the appointment is for and when it is scheduled to happen.
 
 **Data types**
 
@@ -132,7 +135,7 @@ Y = True, it was cancelled N = False, it was not cancelled, if it was not regist
 |-----------------|------------------|----------|--------------------------------
 | PAYMENT_ID      | NUMBER           | No       | "SYSTEM"."PAYMENTS_SEQ"."NEXTVAL" 
 | AMOUNT          | NUMBER           | No       | (null)                         
-| PAYMENT_DATE    | DATE             | No       | (null)                         
+| PAYMENT_DATE    | DATE             | No       | SYSDATE                         
 | APPOINTMENT_ID  | NUMBER           | No       | (null)                         
 | PAYMENT_METHOD  | VARCHAR2(10 CHAR)| No       | (null)                         
 | CREATED_BY      | VARCHAR2(20 CHAR)| No       | (null)                         
@@ -142,18 +145,17 @@ Y = True, it was cancelled N = False, it was not cancelled, if it was not regist
 
 ### Table Overview
 
-Payments table stores data everything about the payments - payment amount, method, date, who and when updated the last info about the payment.
+Payments table stores everything about the payments - payment amount, method, date, who and when updated the last info about the payment.
 
 
 ### GROOMER_SCHEDULE TABLE
 | COLUMN_NAME         | DATA_TYPE         | NULLABLE | DATA_DEFAULT                     
 |---------------------|-------------------|----------|----------------------------------
 | GROOMER_SCHEDULE_ID | NUMBER            | No       | "SYSTEM"."GROOMER_SCHEDULE_SEQ"."NEXTVAL" 
-| GROOMER_ID          | NUMBER            | No       | (null)                           
-| APPOINTMENT_ID      | NUMBER            | No       | (null)                           
+| GROOMER_ID          | NUMBER            | No       | (null)                                    
+| SERVICE_ID          | NUMBER            | No       | "SYSTEM"."SERVICES_SEQ"."NEXTVAL"         
 | START_TIME          | DATE              | No       | (null)                           
-| END_TIME            | DATE              | No       | (null)                           
-| GROOMER_STATUS      | VARCHAR2(20 CHAR) | Yes      | 'Available'                      
+| END_TIME            | DATE              | No       | (null)                                                
 | NOTES               | VARCHAR2(255 CHAR)| Yes      | (null)                           
 | CREATED_BY          | VARCHAR2(20 CHAR) | No       | (null)                           
 | CREATION_DATE       | DATE              | No       | (null)                         
@@ -162,7 +164,7 @@ Payments table stores data everything about the payments - payment amount, metho
 
 ### Table Overview
 
-The Groomers_Schedule table stores data about groomers worktime, availability of the groomer, when the appointment was started and when it was finished.
+The Groomers_Schedule table stores data about groomers worktime, availability of the groomer, when the appointment was started and when it was finished. It helps to plan and track the work shifts for each groomer.
 
 ### APPOINTMENT_SERVICE TABLE
 | COLUMN_NAME    | DATA_TYPE | NULLABLE | DATA_DEFAULT 
@@ -173,6 +175,7 @@ The Groomers_Schedule table stores data about groomers worktime, availability of
 ### Table Overview
 This is called "Junction table", it is used to connect "appointments" and "services" tables with foreign keys.
 This enables multiple services per appointment as well as multiple appointments per service.
+It allows flexible service combinations for each customer visit.
 
 More about relationships and its quirks is explained in Relationships part.
 
@@ -192,7 +195,7 @@ More about relationships and its quirks is explained in Relationships part.
 
 ### Table Overview
 
-Service_inventory table stores data about what items are stored in the inventory for the services that your Grooming salon provides. It consists of item_id, item_name, unit and unit_price.
+Service_inventory table stores data about what items are stored in the inventory for the services that your Grooming salon provides. It consists of item_id, item_name, unit and unit_price. This table helps monitor product usage and inventory quantity.'
 
 
 ### APPOINTMENT_NOTIFICATION TABLE
@@ -202,11 +205,12 @@ Service_inventory table stores data about what items are stored in the inventory
 | APPOINTMENT_ID             | NUMBER             | No       | (null)                           
 | NOTIFICATION_TEXT          | VARCHAR2(255 CHAR) | No       | (null)                            
 | NOTIFICATION_DATE          | DATE               | Yes      | (null)                            
-| NOTIFICATION_SENT          | DATE               | Yes      | SYSDATE                                                    
+| NOTIFICATION_SENT          | DATE               | No       | SYSDATE                                                    
 
 ### Table Overview
 
 This table is used for notifying the customer about the appointment.
+It stores the message, when it was created and when it was sent.k
 
 
 # 3. Relationships (Schema)
