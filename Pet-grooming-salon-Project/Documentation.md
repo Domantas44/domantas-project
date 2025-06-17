@@ -49,7 +49,7 @@ CUSTOMER TABLE
 ### GROOMER TABLE
 | COLUMN_NAME     | DATA_TYPE         | NULLABLE | DATA_DEFAULT                   
 |-----------------|-------------------|----------|--------------------------------
-| GROOMER_ID      | NUMBER            | No       | "SYSTEM"."GROOMERS_SEQ"."NEXTVAL" 
+| GROOMER_ID      | NUMBER            | No       | "SYSTEM"."GROOMER_SEQ"."NEXTVAL" 
 | FIRST_NAME      | VARCHAR2(20 CHAR) | No       | (null)                         
 | LAST_NAME       | VARCHAR2(20 CHAR) | No       | (null)                                               
 | SALARY          | NUMBER            | No       | (null)                         
@@ -83,7 +83,7 @@ It helps manage groomer schedules and availability.
 ### SERVICE TABLE
 | COLUMN_NAME | DATA_TYPE         | NULLABLE | DATA_DEFAULT                   
 |-------------|-------------------|----------|--------------------------------
-| SERVICE_ID  | NUMBER            | No       | "SYSTEM"."SERVICES_SEQ"."NEXTVAL" 
+| SERVICE_ID  | NUMBER            | No       | "SYSTEM"."SERVICE_SEQ"."NEXTVAL" 
 | SERVICE_NAME| VARCHAR2(20 CHAR) | No       | (null)                         
 | PRICE       | NUMBER            | No       | (null)                         
 | DESCRIPTION | VARCHAR2(200 CHAR)| No       | (null)                           
@@ -96,7 +96,7 @@ Each service has a unique name and a set price with description.
 ### PET TABLE
 | COLUMN_NAME | DATA_TYPE          | NULLABLE | DATA_DEFAULT                          
 |-------------|--------------------|----------|----------------------------------
-| PET_ID      | NUMBER             | No       | "SYSTEM"."PETS_SEQ"."NEXTVAL"     
+| PET_ID      | NUMBER             | No       | "SYSTEM"."PET_SEQ"."NEXTVAL"     
 | CUSTOMER_ID | NUMBER             | No       | (null)                           
 | PET_NAME    | VARCHAR2(20 CHAR)  | No       | (null)        
 | PET_TYPE    | VARCHAR(20 CHAR)   | No       | (null)      
@@ -111,7 +111,7 @@ Pets table stores data about customers pets, it consists of pet_id, customer_id 
 ### APPOINTMENT TABLE
 | COLUMN_NAME          | DATA_TYPE        | NULLABLE | DATA_DEFAULT                     
 |----------------------|------------------|----------|----------------------------------
-| APPOINTMENT_ID       | NUMBER           | No       | "SYSTEM"."APPOINTMENTS_SEQ"."NEXTVAL" 
+| APPOINTMENT_ID       | NUMBER           | No       | "SYSTEM"."APPOINTMENT_SEQ"."NEXTVAL" 
 | CUSTOMER_ID          | NUMBER           | No       | (null)
 | GROOMER_SCHEDULE_ID | NUMBER            | No       | "SYSTEM"."GROOMER_SCHEDULE_SEQ"."NEXTVAL"                                                                                                 
 | APPOINTMENT_CANCELLED| CHAR(1)          | Yes      | 'N'           
@@ -133,7 +133,7 @@ Y = True, it was cancelled N = False, it was not cancelled, if it was not regist
 ### PAYMENT TABLE
 | COLUMN_NAME     | DATA_TYPE        | NULLABLE | DATA_DEFAULT                   
 |-----------------|------------------|----------|--------------------------------
-| PAYMENT_ID      | NUMBER           | No       | "SYSTEM"."PAYMENTS_SEQ"."NEXTVAL" 
+| PAYMENT_ID      | NUMBER           | No       | "SYSTEM"."PAYMENT_SEQ"."NEXTVAL" 
 | AMOUNT          | NUMBER           | No       | (null)                         
 | PAYMENT_DATE    | DATE             | No       | SYSDATE                         
 | APPOINTMENT_ID  | NUMBER           | No       | (null)                         
@@ -153,7 +153,7 @@ Payments table stores everything about the payments - payment amount, method, da
 |---------------------|-------------------|----------|----------------------------------
 | GROOMER_SCHEDULE_ID | NUMBER            | No       | "SYSTEM"."GROOMER_SCHEDULE_SEQ"."NEXTVAL" 
 | GROOMER_ID          | NUMBER            | No       | (null)                                    
-| SERVICE_ID          | NUMBER            | No       | "SYSTEM"."SERVICES_SEQ"."NEXTVAL"         
+| SERVICE_ID          | NUMBER            | No       | "SYSTEM"."SERVICE_SEQ"."NEXTVAL"         
 | START_TIME          | DATE              | No       | (null)                           
 | END_TIME            | DATE              | No       | (null)                                                
 | NOTES               | VARCHAR2(255 CHAR)| Yes      | (null)                           
@@ -183,7 +183,7 @@ More about relationships and its quirks is explained in Relationships part.
 ### SERVICE_INVENTORY TABLE
 | COLUMN_NAME         | DATA_TYPE         | NULLABLE | DATA_DEFAULT               
 |---------------------|-------------------|----------|----------------------------
-| SERVICE_INVENTORY_ID| NUMBER            | No       | "SYSTEM"."ITEMS_SEQ"."NEXTVAL" 
+| SERVICE_INVENTORY_ID| NUMBER            | No       | "SYSTEM"."ITEM_SEQ"."NEXTVAL" 
 | ITEM_NAME           | VARCHAR2(50 CHAR) | No       | (null)   
 | QUANTITY            | NUMBER            | No       | (null)                           
 | UNIT_PRICE          | NUMBER            | No       | (null)       
