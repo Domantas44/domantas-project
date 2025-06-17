@@ -24,7 +24,7 @@ In total there are 10 data tables in which business data is going to be stored:
 CUSTOMER TABLE
 |COLUMN_NAME  | DATA_TYPE         | NULLABLE | DATA_DEFAULT                             
 |-------------|-------------------|----------|--------
-| CUSTOMER_ID | NUMBER            | No       | "SYSTEM"."CUSTOMERS_SEQ"."NEXTVAL"  
+| CUSTOMER_ID | NUMBER            | No       | "SYSTEM"."CUSTOMER_SEQ"."NEXTVAL"  
 | FIRST_NAME  | VARCHAR2(20 CHAR) | No       | (null)           
 | LAST_NAME   | VARCHAR2(20 CHAR) | Yes      | (null)     
 | PHONE       | VARCHAR2(20 CHAR) | No       | (null)                                                     
