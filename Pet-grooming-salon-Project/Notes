@@ -69,7 +69,7 @@ It is the same with appoinment_notification and appoinments.
             Select a service and time.
             Create an appointment based on that selection.
         */
-            -- Understood and also added the relationship you mentioned.
+            -- Understood and also i have added the relationship you mentioned.
 
 7. I would recommend taking a look at how uniqueness can be defined in a table. It’s a good way to make sure certain values like IDs or emails do not get duplicated when they should not.
 A primary key (which is always unique and not null) which one you use and another one which i did not see in your code is a unique constraint which can be on one or more columns.

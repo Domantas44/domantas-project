@@ -1,5 +1,3 @@
--- Tables
-CREATE SEQUENCE customer_seq START WITH 1;
 CREATE TABLE customer
 (
   customer_id NUMBER             DEFAULT customer_seq.nextval,
@@ -16,7 +14,6 @@ ALTER TABLE customer
 ALTER TABLE customer
   ADD CONSTRAINT unique_customer_email UNIQUE (email);
 
-CREATE SEQUENCE groomer_seq START WITH 1;
 CREATE TABLE groomer
 (
   groomer_id     NUMBER             DEFAULT groomer_seq.nextval,
@@ -41,7 +38,6 @@ ALTER TABLE groomer
 ALTER TABLE groomer
   ADD CONSTRAINT unique_groomer_phone UNIQUE (phone);
 
-CREATE SEQUENCE service_seq START WITH 1;
 CREATE TABLE service
 (
   service_id   NUMBER             DEFAULT service_seq.nextval, 
@@ -54,7 +50,7 @@ CREATE TABLE service
 ALTER TABLE service
   ADD CONSTRAINT unique_service_name UNIQUE (service_name);
 
-CREATE SEQUENCE pet_seq START WITH 1;
+
 CREATE TABLE pet
 (
   pet_id       NUMBER             DEFAULT pet_seq.nextval,
@@ -66,12 +62,11 @@ CREATE TABLE pet
   CONSTRAINT pk_pet PRIMARY KEY (pet_id)
 );
 
-CREATE SEQUENCE appointment_seq START WITH 1; 
 CREATE TABLE appointment
 (
   appointment_id        NUMBER            DEFAULT appointment_seq.nextval, 
   customer_id           NUMBER            NOT NULL,
-  groomer_schedule_id   NUMBER            DEFAULT groomer_schedule_seq.nextval NOT NULL,
+  groomer_schedule_id   NUMBER            NOT NULL,
   appointment_cancelled CHAR(1)           DEFAULT 'N' CHECK (appointment_cancelled IN ('Y', 'N')), 
   created_by            VARCHAR2(20 CHAR) NOT NULL,
   creation_date         DATE              NOT NULL,
@@ -80,8 +75,6 @@ CREATE TABLE appointment
   CONSTRAINT pk_appointment PRIMARY KEY (appointment_id) 
 );
 
-
-CREATE SEQUENCE payment_seq START WITH 1;
 CREATE TABLE payment
 (
   payment_id      NUMBER                   DEFAULT payment_seq.nextval,
@@ -97,12 +90,11 @@ CREATE TABLE payment
 );
 
 
-CREATE SEQUENCE groomer_schedule_seq START WITH 1;
 CREATE TABLE groomer_schedule
 (
   groomer_schedule_id NUMBER             DEFAULT groomer_schedule_seq.nextval,
   groomer_id          NUMBER             NOT NULL,
-  service_id          NUMBER             DEFAULT service_seq.nextval NOT NULL,
+  service_id          NUMBER             NOT NULL,
   start_time          DATE               NOT NULL,
   end_time            DATE               NOT NULL,
   notes               VARCHAR2(255 CHAR),
@@ -120,7 +112,6 @@ CREATE TABLE appointment_service
   service_id     NUMBER NOT NULL
 );
 
-CREATE SEQUENCE service_inventory_seq START WITH 1;
 CREATE TABLE service_inventory
 (
   service_inventory_id  NUMBER DEFAULT service_inventory_seq.nextval,
@@ -135,7 +126,6 @@ CREATE TABLE service_inventory
   CONSTRAINT pk_service_inventory PRIMARY KEY (service_inventory_id)
 );
 
-CREATE SEQUENCE notification_seq START WITH 1;
 CREATE TABLE appointment_notification
 (
   appointment_notification_id   NUMBER             DEFAULT notification_seq.nextval,
@@ -146,6 +136,24 @@ CREATE TABLE appointment_notification
   CONSTRAINT pk_appointment_notification PRIMARY KEY (appointment_notification_id)
 );
 
+CREATE SEQUENCE customer_seq START WITH 1
+INCREMENT BY 1;
+CREATE SEQUENCE groomer_seq START WITH 1
+INCREMENT BY 1;
+CREATE SEQUENCE service_seq START WITH 1
+INCREMENT BY 1;
+CREATE SEQUENCE pet_seq START WITH 1
+INCREMENT BY 1;
+CREATE SEQUENCE appointment_seq START WITH 1
+INCREMENT BY 1;
+CREATE SEQUENCE payment_seq START WITH 1
+INCREMENT BY 1;
+CREATE SEQUENCE groomer_schedule_seq START WITH 1
+INCREMENT BY 1;
+CREATE SEQUENCE service_inventory_seq START WITH 1
+INCREMENT BY 1;
+CREATE SEQUENCE notification_seq START WITH 1
+INCREMENT BY 1;
 
 DROP TABLE customer;
 DROP TABLE groomer;
@@ -158,7 +166,6 @@ DROP TABLE pet;
 DROP TABLE groomer_schedule;
 DROP TABLE appointment_notification;
 
--- Relationships
 ALTER TABLE appointment
   ADD CONSTRAINT fk_customer_to_appointment
     FOREIGN KEY (customer_id)
