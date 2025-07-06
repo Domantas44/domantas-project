@@ -230,7 +230,7 @@ It stores the message, when it was created and when it was sent.k
 
 
 # 3. Relationships (Schema)
-![Grooming salon schema.](https://i.imgur.com/ProE3ZM.png)
+![Grooming salon schema.](https://i.imgur.com/UDswlNr.png)
 
 The Grooming Salon schema can be seen in the visualization above.
 
