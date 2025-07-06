@@ -50,6 +50,17 @@ CREATE TABLE service
 ALTER TABLE service
   ADD CONSTRAINT unique_service_name UNIQUE (service_name);
 
+CREATE TABLE payment_refund
+(
+  refund_id       NUMBER             DEFAULT refund_seq.nextval,
+  payment_id      NUMBER             NOT NULL,
+  refund_amount   NUMBER             NOT NULL,
+  refund_reason   VARCHAR2(255 CHAR) NOT NULL,
+  created_by      VARCHAR2(20 CHAR)  NOT NULL,
+  creation_date   DATE               NOT NULL,
+  last_updated_by VARCHAR2(20 CHAR) ,
+  last_update     DATE              
+);
 
 CREATE TABLE pet
 (
@@ -148,6 +159,8 @@ CREATE SEQUENCE appointment_seq START WITH 1
 INCREMENT BY 1;
 CREATE SEQUENCE payment_seq START WITH 1
 INCREMENT BY 1;
+CREATE SEQUENCE refund_seq START WITH 1
+INCREMENT BY 1;
 CREATE SEQUENCE groomer_schedule_seq START WITH 1
 INCREMENT BY 1;
 CREATE SEQUENCE service_inventory_seq START WITH 1
@@ -155,16 +168,17 @@ INCREMENT BY 1;
 CREATE SEQUENCE notification_seq START WITH 1
 INCREMENT BY 1;
 
-DROP TABLE customer;
-DROP TABLE groomer;
-DROP TABLE appointment;
+DROP TABLE payment_refund;
+DROP TABLE appointment_notification;
 DROP TABLE appointment_service;
 DROP TABLE payment;
-DROP TABLE service;
 DROP TABLE service_inventory;
+DROP TABLE appointment;
 DROP TABLE pet;
 DROP TABLE groomer_schedule;
-DROP TABLE appointment_notification;
+DROP TABLE customer;
+DROP TABLE groomer;
+DROP TABLE service;
 
 ALTER TABLE appointment
   ADD CONSTRAINT fk_customer_to_appointment
@@ -215,6 +229,11 @@ ALTER TABLE appointment
   ADD CONSTRAINT fk_groomer_schedule_to_appointment
     FOREIGN KEY (groomer_schedule_id)
     REFERENCES groomer_schedule (groomer_schedule_id);
+
+ALTER TABLE payment_refund
+  ADD CONSTRAINT fk_payment_to_payment_refund
+    FOREIGN KEY (payment_id)
+    REFERENCES payment (payment_id);
 
 
 -- Multiple unique columns 

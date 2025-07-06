@@ -147,6 +147,22 @@ Y = True, it was cancelled N = False, it was not cancelled, if it was not regist
 
 Payments table stores everything about the payments - payment amount, method, date, who and when updated the last info about the payment.
 
+### PAYMENT_REFUND TABLE
+| COLUMN_NAME     | DATA_TYPE        | NULLABLE | DATA_DEFAULT                   
+|-----------------|------------------|----------|--------------------------------
+| REFUND_ID       | NUMBER           | No       | "SYSTEM"."PAYMENT_SEQ"."NEXTVAL" 
+| PAYMENT_ID      | NUMBER           | No       | (null)                         
+| REFUND_AMOUNT   | DATE             | No       | (null)                         
+| REFUND_REASON   | NUMBER           | No       | (null)                         
+| CREATED_BY      | VARCHAR2(20 CHAR)| No       | (null)                         
+| CREATION_DATE   | DATE             | No       | (null)                     
+| LAST_UPDATED_BY | VARCHAR2(20 CHAR)| Yes      | (null)                         
+| LAST_UPDATE     | DATE             | Yes      | (null)            
+
+### Table Overview
+
+Payment refund table stores data about the refunds in case a refund is needed for the customer - refund amount, reason and timing when it was recorded.
+
 
 ### GROOMER_SCHEDULE TABLE
 | COLUMN_NAME         | DATA_TYPE         | NULLABLE | DATA_DEFAULT                     
