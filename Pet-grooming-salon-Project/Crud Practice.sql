@@ -26,6 +26,23 @@ BEGIN
     new_customer ('Simas', 'Simonaitis', '065535458', 'simassimutis@gmail.com');
 END;
 
+--Create a refund procedure that verifies payment existence first
+CREATE OR REPLACE PROCEDURE customer_refund (
+    v_payment_id payment_refund.payment_id%TYPE,
+    v_amount payment_refund.refund_amount%TYPE,
+    v_reason payment_refund.refund_reason%TYPE
+)
+IS
+v_count NUMBER;
+BEGIN
+    SELECT 1 INTO v_count 
+    FROM payment 
+    WHERE payment_id = v_payment_id;
+
+    INSERT INTO payment_refund (refund_id, payment_id, refund_amount, refund_reason)
+    VALUES (refund_seq.NEXTVAL, v_payment_id, v_amount, v_reason);
+END;
+
 /*
 Register a New Pet for a Customer
 Check if the customer exists.
@@ -114,8 +131,6 @@ BEGIN appointment_booking(
     121
 );
 END;
-
-ALTER SEQUENCE customer_seq RESTART START WITH 1;
 
 -- Delete
 BEGIN
