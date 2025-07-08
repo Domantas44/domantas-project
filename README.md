@@ -150,7 +150,7 @@ Payments table stores everything about the payments - payment amount, method, da
 ### PAYMENT_REFUND TABLE
 | COLUMN_NAME     | DATA_TYPE        | NULLABLE | DATA_DEFAULT                   
 |-----------------|------------------|----------|--------------------------------
-| REFUND_ID       | NUMBER           | No       | "SYSTEM"."PAYMENT_SEQ"."NEXTVAL" 
+| REFUND_ID       | NUMBER           | No       | "SYSTEM"."REFUND_SEQ"."NEXTVAL" 
 | PAYMENT_ID      | NUMBER           | No       | (null)                         
 | REFUND_AMOUNT   | DATE             | No       | (null)                         
 | REFUND_REASON   | NUMBER           | No       | (null)                         
@@ -230,7 +230,7 @@ It stores the message, when it was created and when it was sent.k
 
 
 # 3. Relationships (Schema)
-![Grooming salon schema.](https://i.imgur.com/UDswlNr.png)
+![Grooming salon schema.](https://i.imgur.com/EEIrLDM.png)
 
 The Grooming Salon schema can be seen in the visualization above.
 
