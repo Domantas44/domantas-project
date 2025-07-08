@@ -1,3 +1,5 @@
+                                                                        --INSERT--
+
 --Basic INSERT into customer table
 BEGIN
     INSERT INTO CUSTOMER (customer_id, first_name, last_name, phone, email)
@@ -132,7 +134,7 @@ BEGIN appointment_booking(
 );
 END;
 
--- Delete
+                                                                    -- Delete
 BEGIN
     DELETE FROM CUSTOMER
     WHERE customer_id between 4 and 6;
@@ -156,7 +158,7 @@ BEGIN
     WHERE quantity = 0;
 END;
 
--- Update
+                                                                -- Update
 
 BEGIN
     UPDATE CUSTOMER
@@ -171,6 +173,7 @@ BEGIN
     SET appointment_cancelled = 'Y'
     WHERE appointment_id = 1;
 END;
+
 
 
 

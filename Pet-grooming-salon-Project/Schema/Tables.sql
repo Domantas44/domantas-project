@@ -60,6 +60,7 @@ CREATE TABLE payment_refund
   creation_date   DATE               NOT NULL,
   last_updated_by VARCHAR2(20 CHAR) ,
   last_update     DATE              
+  CONSTRAINT pk_payment_refund PRIMARY KEY (refund_id)
 );
 
 CREATE TABLE pet
@@ -125,7 +126,7 @@ CREATE TABLE appointment_service
 
 CREATE TABLE service_inventory
 (
-  service_inventory_id  NUMBER DEFAULT service_inventory_seq.nextval,
+  service_inventory_id  NUMBER             DEFAULT service_inventory_seq.nextval,
   item_name             VARCHAR2(100 CHAR) NOT NULL,
   quantity              NUMBER             NOT NULL,
   unit_price            NUMBER             NOT NULL,

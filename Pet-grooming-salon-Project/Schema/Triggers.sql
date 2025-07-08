@@ -82,3 +82,17 @@ BEGIN
         :NEW.last_update := SYSDATE;
     END IF;
 END;
+
+
+CREATE OR REPLACE TRIGGER payment_refund_log
+BEFORE INSERT OR UPDATE ON payment_refund
+FOR EACH ROW
+BEGIN
+    IF INSERTING THEN
+        :NEW.created_by := USER;
+        :NEW.creation_date := SYSDATE;
+    ELSIF UPDATING THEN
+        :NEW.last_updated_by := USER;
+        :NEW.last_update := SYSDATE;
+    END IF;
+END;

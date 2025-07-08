@@ -29,7 +29,7 @@ DECLARE
     '+3546'       -- Iceland
   );
 BEGIN
-  FOR i IN 1..500 LOOP
+  FOR i IN 1..1000 LOOP
     DECLARE
       fname VARCHAR2(50);
       lname VARCHAR2(50);
@@ -50,8 +50,13 @@ END;
 /
 
 BEGIN
-    DELETE FROM customer WHERE customer_id between 501 and 600;
+    DELETE FROM customer WHERE customer_id between 101 and 1600;
 END;
 
+DECLARE
+ v_count NUMBER;
+BEGIN
+select count(customer_id) INTO v_count from customer;
+DBMS_OUTPUT.PUT_LINE(v_count);
+END;
 select * from customer;
-

@@ -4,8 +4,8 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -108,
-    "scrollLeft": -795,
+    "scrollTop": -1191,
+    "scrollLeft": -124,
     "zoomLevel": 0.85,
     "show": 492,
     "database": 8,
@@ -3475,16 +3475,16 @@
         "comment": "",
         "dataType": "NUMBER",
         "default": "refund_seq.nextval",
-        "options": 0,
+        "options": 2,
         "ui": {
-          "keys": 0,
+          "keys": 1,
           "widthName": 60,
           "widthComment": 60,
           "widthDataType": 60,
           "widthDefault": 100
         },
         "meta": {
-          "updateAt": 1751642436848,
+          "updateAt": 1751987525852,
           "createAt": 1751642360986
         }
       },
