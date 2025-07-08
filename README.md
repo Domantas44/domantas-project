@@ -6,7 +6,7 @@ The tables were chosen according to similar businesses and their working princip
 This data model should cover most of the average needs of a grooming salon.
 
 # 2. Entity definitions (Tables)
-In total there are 10 data tables in which business data is going to be stored:
+In total there are 11 data tables in which business data is going to be stored:
  
 * customer;
 * groomer;
@@ -14,6 +14,7 @@ In total there are 10 data tables in which business data is going to be stored:
 * pet;
 * appointment;
 * payment;
+* payment_refund;
 * groomer_schedule;
 * appointment_service
 * service_inventory;
