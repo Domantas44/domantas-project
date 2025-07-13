@@ -1,4 +1,5 @@
-# Pet grooming salon
+# Grooming Salon Database Project
+
 
 # 1. Overview
 The purpose of this data model is to create a working data system where a Pet grooming salon can store, retrieve and analyze data that has accumulated while doing business. 
@@ -264,3 +265,22 @@ This Grooming Salon data model primarily features one-to-many relationships, wit
 There could be a confusion where is that many-to-many relationship located, since relational databases does not allow to directly give a many-to-many relationship link between tables, it is solved by using junction table "appointment_service"
 
 In simple terms, one appointment can have many services and one service can be a part of many different appointments. To fix this, junction table is used. This is used to clearly list which service happened during each appointment.
+
+# Technologies Used
+
+Oracle SQL / PL/SQL – for schema, constraints, triggers and procedures.
+
+Vuerd – to generate and visualize ER diagrams.
+
+Visual Studio Code – for development and testing environment.
+
+# 🚀 Getting Started
+To set up the database:
+
+Create all schema tables and sequences.
+
+Run the mock data scripts.
+
+Create indexes and triggers.
+
+Use stored procedures to manipulate data if needed.
