@@ -1,4 +1,3 @@
--- Mock data for customer table
 DECLARE
   v_first_names  SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST('John','Emily','Michael','Sarah','David','Jessica','Daniel','Ashley','Matthew','Amanda','James','Jennifer','Joshua','Elizabeth','Andrew','Megan','Joseph','Lauren','Christopher','Hannah',
 'Ryan','Nicole','Brandon','Rachel','Tyler','Brittany','Zachary','Samantha','Justin','Stephanie','Anthony','Amber','Jonathan','Rebecca','Austin','Courtney','Nicholas','Danielle','Christian','Kaitlyn',
@@ -10,7 +9,7 @@ DECLARE
 'Lopez','Gonzalez','Wilson','Anderson','Thomas','Taylor','Moore','Jackson','Martin','Lee',
 'Perez','Thompson','White','Harris','Sanchez','Clark','Ramirez','Lewis','Robinson','Walker',
 'Young','Allen','King','Wright','Scott','Torres','Nguyen','Hill','Flores','Green',
-'Adams','Nelson','Baker','Hall','Rivera','Campbell','Mitchell','Carter','Roberts','Gomez',
+'AdAMS','Nelson','Baker','Hall','Rivera','Campbell','Mitchell','Carter','Roberts','Gomez',
 'Phillips','Evans','Turner','Diaz','Parker','Cruz','Edwards','Collins','Reyes','Stewart',
 'Morris','Morales','Murphy','Cook','Rogers','Gutierrez','Ortiz','Morgan','Cooper','Peterson',
 'Bailey','Reed','Kelly','Howard','Ramos','Kim','Cox','Ward','Richardson','Watson',
@@ -42,21 +41,13 @@ BEGIN
         fname,
         lname,
         v_phone_templates(MOD(i-1, v_phone_templates.COUNT)+1) || TO_CHAR(TRUNC(DBMS_RANDOM.VALUE(100000,999999))),
-        LOWER(fname) || '.' || LOWER(lname) || i || '@example.com'
+        LOWER(fname) || '.' || LOWER(lname) || i || '.' || TRUNC(DBMS_RANDOM.VALUE(10000,99999)) || '@example.com'
       );
     END;
   END LOOP;
 END;
+COMMIT;
 /
 
-BEGIN
-    DELETE FROM customer WHERE customer_id between 101 and 1600;
-END;
 
-DECLARE
- v_count NUMBER;
-BEGIN
-select count(customer_id) INTO v_count from customer;
-DBMS_OUTPUT.PUT_LINE(v_count);
-END;
-select * from customer;
+

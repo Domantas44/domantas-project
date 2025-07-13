@@ -1,9 +1,3 @@
---COMMENT ON COLUMN table_name.column_name is 'Comment...';
---COMMENT ON TABLE table_name IS '....';
--- Syntax for retrieving them
--- SELECT * FROM user_tab_comments WHERE table_name = 'APPOINTMENTS';
--- SELECT * FROM user_col_comments WHERE table_name = 'APPOINTMENTS';
-
 
 COMMENT ON TABLE customer IS 
 'This table stores customer contact information: first and last name, phone, and email. 

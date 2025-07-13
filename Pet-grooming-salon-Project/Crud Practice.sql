@@ -134,7 +134,7 @@ BEGIN appointment_booking(
 );
 END;
 
-                                                                    -- Delete
+-- Delete
 BEGIN
     DELETE FROM CUSTOMER
     WHERE customer_id between 4 and 6;
@@ -158,7 +158,7 @@ BEGIN
     WHERE quantity = 0;
 END;
 
-                                                                -- Update
+-- Update
 
 BEGIN
     UPDATE CUSTOMER
@@ -174,11 +174,26 @@ BEGIN
     WHERE appointment_id = 1;
 END;
 
+-- Data imported
+-- Check low quantity inventory
+CREATE OR REPLACE PROCEDURE check_low_inventory
+IS
+BEGIN
+    for i in (
+        SELECT service_inventory_id, item_name, quantity
+        FROM service_inventory
+        WHERE quantity < 5
+        )
+    LOOP
+    DBMS_OUTPUT.PUT_LINE('Low inventory: ' || i.item_name || 'ID: ' || i.service_inventory_id || ' Quantity: ' || i.quantity);
+    END LOOP;
+END;
+
+EXEC check_low_inventory;
 
 
 
-
-
+select * from customer;
 
 
 
