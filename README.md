@@ -219,7 +219,7 @@ Service_inventory table stores data about what items are stored in the inventory
 ### APPOINTMENT_NOTIFICATION TABLE
 | COLUMN_NAME                | DATA_TYPE          | NULLABLE | DATA_DEFAULT                      
 |----------------------------|--------------------|----------|-----------------------------------
-| APPOINTMENT_NOTIFICATION_ID| NUMBER             | No       | "SYSTEM"."NOTIFICATION_SEQ"."NEXTVAL" 
+| APPOINTMENT_NOTIFICATION_ID| NUMBER             | No       | "SYSTEM"."APPOINTMENT_NOTIFICATION_SEQ"."NEXTVAL" 
 | APPOINTMENT_ID             | NUMBER             | No       | (null)                           
 | NOTIFICATION_TEXT          | VARCHAR2(255 CHAR) | No       | (null)                            
 | NOTIFICATION_DATE          | DATE               | Yes      | (null)                            

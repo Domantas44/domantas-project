@@ -4,8 +4,8 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -547,
-    "scrollLeft": -800,
+    "scrollTop": -954,
+    "scrollLeft": -354,
     "zoomLevel": 0.85,
     "show": 492,
     "database": 8,
@@ -3294,17 +3294,17 @@
         "name": "appointment_notification_id",
         "comment": "",
         "dataType": "NUMBER",
-        "default": "notification_seq.nextval",
+        "default": "appointment_notification_seq.nextval",
         "options": 2,
         "ui": {
           "keys": 1,
           "widthName": 150,
           "widthComment": 60,
           "widthDataType": 60,
-          "widthDefault": 125
+          "widthDefault": 199
         },
         "meta": {
-          "updateAt": 1750003888158,
+          "updateAt": 1752511595791,
           "createAt": 1747066423926
         }
       },
@@ -3845,7 +3845,7 @@
           "columnIds": [
             "wAVD0Qjl9SErJjz3cR-AC"
           ],
-          "x": 1035.5776,
+          "x": 1072.5776,
           "y": 369.9258,
           "direction": 8
         },

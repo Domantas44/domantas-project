@@ -140,7 +140,7 @@ CREATE TABLE service_inventory
 
 CREATE TABLE appointment_notification
 (
-  appointment_notification_id   NUMBER             DEFAULT notification_seq.nextval,
+  appointment_notification_id   NUMBER             DEFAULT appointment_notification_seq.nextval,
   appointment_id                NUMBER             NOT NULL,
   notification_text             VARCHAR2(255 CHAR) NOT NULL,
   notification_date             DATE,
@@ -166,8 +166,10 @@ CREATE SEQUENCE groomer_schedule_seq START WITH 1
 INCREMENT BY 1;
 CREATE SEQUENCE service_inventory_seq START WITH 1
 INCREMENT BY 1;
-CREATE SEQUENCE notification_seq START WITH 1
+CREATE SEQUENCE appointment_notification_seq START WITH 1
 INCREMENT BY 1;
+
+
 
 DROP TABLE payment_refund;
 DROP TABLE appointment_notification;
@@ -238,10 +240,6 @@ ALTER TABLE payment_refund
 
 
 -- Multiple unique columns 
-
-ALTER TABLE appointment_notification
-  ADD CONSTRAINT unique_appointment_notification_and_appointment_id
-  UNIQUE (appointment_id);
 
 ALTER TABLE groomer_schedule
   ADD CONSTRAINT unique_groomer_and_working_time 

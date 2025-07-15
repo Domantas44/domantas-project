@@ -191,8 +191,6 @@ END;
 
 EXEC check_low_inventory;
 
-
-
 select * from customer;
 
 

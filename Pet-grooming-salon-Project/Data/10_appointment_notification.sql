@@ -30,7 +30,7 @@ BEGIN
       notification_date,
       notification_sent
     ) VALUES (
-      notification_seq.NEXTVAL,
+      appointment_notification_seq.NEXTVAL,
       v_appointment_ids(i),
       v_texts(TRUNC(DBMS_RANDOM.VALUE(1, v_texts.COUNT + 1))),
       TRUNC(SYSDATE - DBMS_RANDOM.VALUE(0, 60)),
