@@ -100,8 +100,6 @@ BEGIN
     book_delete(2);
 END;
 
-
--- using my older 'dataset' and memorizing constraints that i still dont know, by leaving comments
 CREATE TABLE customers (
     customer_id NUMBER PRIMARY KEY,
     first_name VARCHAR2(50) NOT NULL,
@@ -188,9 +186,6 @@ CREATE INDEX idx_loans_status ON loans(loan_status);
 CREATE INDEX idx_audit_table_op ON etl_audit_log(table_name, operation);
 
 -- Indexes are created for specific columns which are accessed most frequently
-
--- Theoretical knowledge for know, practice with index'es will come later on
-
 
 ---- Beginner friendly coding from Gemini given exercises (variables, conditionals, loops, database interaction)
 -- Retrieving Data (employees, customers table)

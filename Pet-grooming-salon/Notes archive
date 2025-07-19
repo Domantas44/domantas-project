@@ -11,7 +11,6 @@
 
 3. I see you use the type VARCHAR2(200). There are two ways to write VARCHAR2. 
    Can you check and explain the differences between them and which one is better to use?
-    -- Cool! i didnt know till now that you can (and probably must) specify if you want to use bytes or full characters which could be more then 1 byte.
     -- So there are 2 options (byte is default if not specified which is important) "VARCHAR2(200 byte)" and "VARCHAR2(200 char)". 
     -- Byte is used for English, numbers and other single byte symbols, char is not always 1 byte for example certain language words store up to 4 bytes in a single letter.
     -- In another words "Byte" stores certain amount of bytes regardless of how many characters it represents, "Char" stores specified number of characters regardless of how many bytes it has. 

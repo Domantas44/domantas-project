@@ -1,3 +1,4 @@
+-- Pet Grooming Salon Database Testing Data, to check if mock data is valid
 -- Appointments with valid customer and groomer schedules
 SELECT a.appointment_id, c.first_name || ' ' || c.last_name AS customer_name,
        g.first_name || ' ' || g.last_name AS groomer_name,
