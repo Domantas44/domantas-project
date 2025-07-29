@@ -274,13 +274,17 @@ Vuerd – to generate and visualize ER diagrams.
 
 Visual Studio Code – for development and testing environment.
 
-# 🚀 Getting Started
+# Getting Started
 To set up the database:
 
-Create all schema tables and sequences.
+Install Oracle extension in Visual Studio Code
 
-Run the mock data scripts.
+Run Oracle database server
+
+Create all schema tables, constraints and sequences.
 
 Create indexes and triggers.
 
-Use stored procedures to manipulate data if needed.
+Run the mock data scripts.
+
+Use stored procedures to manipulate data.
